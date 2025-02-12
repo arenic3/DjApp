@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "DJAudioPlayer.h"
 
 using namespace juce;
 
@@ -9,6 +10,9 @@ using namespace juce;
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
+
+
+
 class MainComponent  : public juce::AudioAppComponent, public juce::Button::Listener, public juce::Slider::Listener
 {
 public:
@@ -31,18 +35,18 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
-    std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
-    
     juce::TextButton playButton;
     juce::TextButton stopButton;
     juce::TextButton loadButton;
-    juce::Slider gainSlider;
-    juce::AudioFormatManager formatManager;
-    juce::AudioTransportSource transportSource;
+    juce::Slider gainDial;
+    juce::Slider posSlider;
     juce::Random random;
+    juce::Image playImg;
+    DJAudioPlayer player1;
     
     bool playing = false;
     double gain = 0.5;
+    double posi = 0.;
     
     //float freq = 0.f;
     //float phase = 0.f;

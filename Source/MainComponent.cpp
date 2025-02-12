@@ -25,6 +25,7 @@ MainComponent::MainComponent()
     playButton.setButtonText("Play");
     playButton.addListener(this);
     
+    
     //Stop Button
     addAndMakeVisible(stopButton);
     stopButton.setButtonText("Stop");
@@ -36,14 +37,19 @@ MainComponent::MainComponent()
     loadButton.addListener(this);
     
     //Gain Slider
-    gainSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
-    addAndMakeVisible(gainSlider);
-    gainSlider.addListener(this);
-    gainSlider.setRange(0, 1);
-    gainSlider.setValue(0.5);
+    gainDial.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+    addAndMakeVisible(gainDial);
+    gainDial.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);    //Remove gain slider value box
+    gainDial.addListener(this);
+    gainDial.setRange(0, 1);
+    gainDial.setValue(0.5);
     
-    //Format manager
-    formatManager.registerBasicFormats();
+    //Playback position slider
+    addAndMakeVisible(posSlider);
+    posSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);     //Remove text box from position slider
+    posSlider.addListener(this);
+    posSlider.setRange(0, 1);
+    posSlider.setValue(0);
 }
 
 MainComponent::~MainComponent()
@@ -55,49 +61,28 @@ MainComponent::~MainComponent()
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-    // This function will be called when the audio device is started, or when
-    // its settings (i.e. sample rate, block size, etc) are changed.
-
-    // You can use this function to initialise any resources you might need,
-    // but be careful - it will be called on the audio thread, not the GUI thread.
-
-    // For more details, see the help for AudioProcessor::prepareToPlay()
-    
-    transportSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    //
+    player1.prepareToPlay(samplesPerBlockExpected, sampleRate);
 }
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
-    if(!playing){
-        //Right now we are not producing any data, in which case we need to clear the buffer
-        //(to prevent the output of random noise)
-        bufferToFill.clearActiveBufferRegion();
-        return;
-    }
-    
-    // Your audio-processing code goes here!
-    transportSource.getNextAudioBlock(bufferToFill);
-    
-    // For more details, see the help for AudioProcessor::getNextAudioBlock()
+    //
+    player1.getNextAudioBlock(bufferToFill);
 }
 
 void MainComponent::releaseResources()
 {
-    // This will be called when the audio device stops, or when it is being
-    // restarted due to a setting change.
-
-    // For more details, see the help for AudioProcessor::releaseResources()
-    
-    transportSource.releaseResources();
+    //
+    player1.releaseResources();
 }
 
 //==============================================================================
 void MainComponent::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    // You can add your drawing code here!
+    g.fillAll (Colours::grey);
+    //Drawing code:
 }
 
 void MainComponent::resized()
@@ -106,12 +91,11 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions.
     
-    
-    playButton.setBounds(getWidth()/6, 0, getWidth()/3, getHeight()/7); //Play Button
-    stopButton.setBounds(getWidth()/2, 0, getWidth()/3, getHeight()/7); //Stop Button
-    loadButton.setBounds(0, 0, getWidth()/6, getHeight()/7);    //Load button
-    gainSlider.setBounds(getWidth()/2.4, 1, getWidth(), getHeight()/6);  //Gain Slider
-    gainSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);    //Remove gain slider value box
+    loadButton.setBounds(0, 0, getWidth()/9, getHeight()/7);    //Load button
+    playButton.setBounds(getWidth()/9, 0, getWidth()/9, getHeight()/7); //Play Button
+    stopButton.setBounds(getWidth()/4.5, 0, getWidth()/9, getHeight()/7); //Stop Button
+    gainDial.setBounds(getWidth()/1.18, 1, getWidth()/9, getHeight()/6);  //Gain Slider
+    posSlider.setBounds(getWidth()/2.6, 0, getWidth()/2.4, getHeight()/9);  //Position Slider
 }
 
 void MainComponent::buttonClicked(juce::Button * button)
@@ -119,26 +103,29 @@ void MainComponent::buttonClicked(juce::Button * button)
     //Called when buttons are clicked
     
     if (&playButton == button) {
-        DBG("Maincomponent::buttonClicked: Play button clicked");
+        //DBG("Maincomponent::buttonClicked: Play button clicked");
         playing = true;
-        transportSource.setPosition(0);
-        transportSource.start();
+        player1.play();
     } else if (&stopButton == button) {
-        DBG("Maincomponent::buttonClicked: Stop button clicked");
+        //DBG("Maincomponent::buttonClicked: Stop button clicked");
         playing = false;
-        transportSource.stop();
+        player1.stop();
     }
     
     if(&loadButton == button) {
         FileChooser chooser{"choose a file to play..."};
         if(chooser.browseForFileToOpen()){
+            auto url = URL(chooser.getResult());
+            player1.loadURL(url);
+          
+            /* Old URL code
             auto file = chooser.getResult();
             auto * reader = formatManager.createReaderFor(file);
             if(reader){
                 auto newSource = std::make_unique<AudioFormatReaderSource>(reader, true);
                 transportSource.setSource(newSource.get(), 0, nullptr, reader->sampleRate);
                 readerSource = std::move(newSource);
-            }
+            }//*/
         }
     }
 }
@@ -147,9 +134,15 @@ void MainComponent::sliderValueChanged(juce::Slider * slider)
 {
     //Called when sliders are changed
     
-    if(&gainSlider == slider) {
-        DBG("Maincomponent::sliderValueChanged: slider changed" << gainSlider.getValue());
-        gain = gainSlider.getValue();
-        transportSource.setGain(gain);
+    if(&gainDial == slider) {
+        DBG("Maincomponent::sliderValueChanged: slider changed" << gainDial.getValue());
+        gain = gainDial.getValue();
+        player1.setGain(gain);
+    }
+    
+    if(&posSlider == slider) {
+        DBG("Maincomponent::sliderValueChanged: slider changed" << posSlider.getValue());
+        posi = posSlider.getValue();
+        player1.setPositionRelative(posi);
     }
 }
