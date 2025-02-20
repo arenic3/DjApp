@@ -42,7 +42,7 @@ private:
     juce::Slider gainDial;
     juce::Slider posSlider;
     DJAudioPlayer player1;
-    DeckGUI deck1;
+    DeckGUI deck1{player1};
     
     bool playing = false;
     double gain = 0.5;

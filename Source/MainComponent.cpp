@@ -23,7 +23,7 @@ MainComponent::MainComponent()
     //Deck1
     addAndMakeVisible(deck1);
     
-    //Play Button
+    /*Play Button
     addAndMakeVisible(playButton);
     playButton.setButtonText("Play");
     playButton.addListener(this);
@@ -53,6 +53,7 @@ MainComponent::MainComponent()
     posSlider.addListener(this);
     posSlider.setRange(0, 1);
     posSlider.setValue(0);
+    */
 }
 
 MainComponent::~MainComponent()
@@ -113,13 +114,7 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions.
     
-    deck1.setBounds(0, getHeight()/5 * 4, getWidth(), getHeight()/5);
-    
-    loadButton.setBounds(0, 0, getWidth()/9, getHeight()/7);    //Load button
-    playButton.setBounds(getWidth()/9, 0, getWidth()/9, getHeight()/7); //Play Button
-    stopButton.setBounds(getWidth()/4.5, 0, getWidth()/9, getHeight()/7); //Stop Button
-    gainDial.setBounds(getWidth()/1.18, 1, getWidth()/9, getHeight()/6);  //Gain Slider
-    posSlider.setBounds(getWidth()/2.6, 0, getWidth()/2.4, getHeight()/9);  //Position Slider
+    deck1.setBounds(0, 0, getWidth()/2., getHeight());
 }
 
 void MainComponent::buttonClicked(juce::Button * button)
