@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "DJAudioPlayer.h"
+#include "DeckGUI.h"
 
 using namespace juce;
 
@@ -40,9 +41,8 @@ private:
     juce::TextButton loadButton;
     juce::Slider gainDial;
     juce::Slider posSlider;
-    juce::Random random;
-    juce::Image playImg;
     DJAudioPlayer player1;
+    DeckGUI deck1;
     
     bool playing = false;
     double gain = 0.5;
@@ -50,5 +50,6 @@ private:
     
     //float freq = 0.f;
     //float phase = 0.f;
+    //juce::Random random;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

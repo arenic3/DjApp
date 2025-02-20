@@ -4,6 +4,8 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
   <MAINGROUP id="UYCR4n" name="Dj-app">
     <GROUP id="{2ADA1F3C-CF8F-A121-ED4A-270DAB70606A}" name="Source">
+      <FILE id="YE8iZI" name="DeckGui.cpp" compile="1" resource="0" file="Source/DeckGui.cpp"/>
+      <FILE id="hq9Rhz" name="DeckGui.h" compile="0" resource="0" file="Source/DeckGui.h"/>
       <FILE id="KArzh9" name="DJAudioPlayer.cpp" compile="1" resource="0"
             file="Source/DJAudioPlayer.cpp"/>
       <FILE id="YyI4PX" name="DJAudioPlayer.h" compile="0" resource="0" file="Source/DJAudioPlayer.h"/>

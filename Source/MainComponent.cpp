@@ -20,6 +20,9 @@ MainComponent::MainComponent()
         setAudioChannels (2, 2);
     }
     
+    //Deck1
+    addAndMakeVisible(deck1);
+    
     //Play Button
     addAndMakeVisible(playButton);
     playButton.setButtonText("Play");
@@ -67,7 +70,26 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
-    //
+    /*
+    if(!playing){
+        bufferToFill.clearActiveBufferRegion();
+        return;
+    }
+    
+    
+    int numChannels = bufferToFill.buffer->getNumChannels();
+    auto * leftChannel = numChannels>0 ? bufferToFill.buffer->getWritePointer(0, bufferToFill.startSample) : nullptr;
+    auto * rightChannel = numChannels>0 ? bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample) : nullptr;
+    
+    for(int i=0; i<bufferToFill.numSamples; ++i){
+        auto sample = std::fmod(phase, 1.f)*2. -1.;
+        sample *= 0.1 * gain;
+        phase += std::fmod(freq, 0.01f);
+        freq += 0.0000005f;
+        if(leftChannel) leftChannel[i] = sample;
+        if(rightChannel) rightChannel[i] = sample;
+    }//*/
+    
     player1.getNextAudioBlock(bufferToFill);
 }
 
@@ -91,6 +113,8 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions.
     
+    deck1.setBounds(0, getHeight()/5 * 4, getWidth(), getHeight()/5);
+    
     loadButton.setBounds(0, 0, getWidth()/9, getHeight()/7);    //Load button
     playButton.setBounds(getWidth()/9, 0, getWidth()/9, getHeight()/7); //Play Button
     stopButton.setBounds(getWidth()/4.5, 0, getWidth()/9, getHeight()/7); //Stop Button
@@ -103,13 +127,22 @@ void MainComponent::buttonClicked(juce::Button * button)
     //Called when buttons are clicked
     
     if (&playButton == button) {
-        //DBG("Maincomponent::buttonClicked: Play button clicked");
-        playing = true;
-        player1.play();
+        DBG("Maincomponent::buttonClicked: Play button clicked");
+        if(!playing){
+            DBG("audio playing");
+            playing = true;
+            player1.play();
+        } else if(playing){
+            DBG("audio paused");
+            playing = false;
+            player1.stop();
+        }
+        
     } else if (&stopButton == button) {
-        //DBG("Maincomponent::buttonClicked: Stop button clicked");
+        DBG("Maincomponent::buttonClicked: Stop button clicked audio restarted");
         playing = false;
         player1.stop();
+        player1.setPosition(0);
     }
     
     if(&loadButton == button) {
@@ -117,15 +150,6 @@ void MainComponent::buttonClicked(juce::Button * button)
         if(chooser.browseForFileToOpen()){
             auto url = URL(chooser.getResult());
             player1.loadURL(url);
-          
-            /* Old URL code
-            auto file = chooser.getResult();
-            auto * reader = formatManager.createReaderFor(file);
-            if(reader){
-                auto newSource = std::make_unique<AudioFormatReaderSource>(reader, true);
-                transportSource.setSource(newSource.get(), 0, nullptr, reader->sampleRate);
-                readerSource = std::move(newSource);
-            }//*/
         }
     }
 }
