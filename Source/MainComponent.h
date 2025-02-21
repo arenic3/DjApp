@@ -1,8 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "DJAudioPlayer.h"
-#include "DeckGUI.h"
+#include "DeckGui.h"
 
 using namespace juce;
 
@@ -14,7 +13,7 @@ using namespace juce;
 
 
 
-class MainComponent  : public juce::AudioAppComponent, public juce::Button::Listener, public juce::Slider::Listener
+class MainComponent  : public juce::AudioAppComponent
 {
 public:
     //==============================================================================
@@ -30,26 +29,15 @@ public:
     void paint (juce::Graphics& g) override;
     void resized() override;
     
-    void buttonClicked(juce::Button *button) override;  //inherit virtual function
-    void sliderValueChanged(juce::Slider *slider) override;  //inherit virtual function
-    
 private:
     //==============================================================================
     // Your private member variables go here...
-    juce::TextButton playButton;
-    juce::TextButton stopButton;
-    juce::TextButton loadButton;
-    juce::Slider gainDial;
-    juce::Slider posSlider;
     DJAudioPlayer player1;
     DeckGUI deck1{player1};
+    DJAudioPlayer player2;
+    DeckGUI deck2{player2};
+    MixerAudioSource mixerSource;
+    juce::Image background;
     
-    bool playing = false;
-    double gain = 0.5;
-    double posi = 0.;
-    
-    //float freq = 0.f;
-    //float phase = 0.f;
-    //juce::Random random;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

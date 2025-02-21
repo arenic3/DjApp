@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "DJAudioPlayer.h"
+#include "CustomGUIElements.h"
 
 //==============================================================================
 /*
@@ -30,12 +31,13 @@ public:
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeckGUI)
+    CustomGUIDial customDial;
+    CustomGUISlider customSlider;
     juce::TextButton playPauseButton;
     juce::TextButton stopButton;
     juce::TextButton loadButton;
     juce::Slider gainDial;
     juce::Slider posSlider;
     juce::Slider speedSlider;
-    
     DJAudioPlayer& djAudioPlayer;
 };

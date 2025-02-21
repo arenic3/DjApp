@@ -3,7 +3,20 @@
 <JUCERPROJECT id="ZkQa3G" name="Dj-app" projectType="guiapp" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
   <MAINGROUP id="UYCR4n" name="Dj-app">
+    <GROUP id="{82BC0E0C-DB65-2EED-3B5E-F341CE3C69FE}" name="Assets">
+      <FILE id="rgY6gu" name="play.png" compile="0" resource="1" file="../../../../Downloads/play.png"/>
+      <FILE id="qGwXPp" name="Bg.png" compile="0" resource="1" file="../../../../Library/Mobile Documents/com~apple~CloudDocs/Bg.png"/>
+      <FILE id="f6SGuF" name="icon.png" compile="0" resource="1" file="../../../../Downloads/icon.png"/>
+      <FILE id="CtjagY" name="slider2.png" compile="0" resource="1" file="../../../../Downloads/slider2.png"/>
+      <FILE id="SSDEfv" name="slider1.png" compile="0" resource="1" file="../../../../Downloads/slider1.png"/>
+      <FILE id="hGbLqF" name="knob1.png" compile="0" resource="1" file="../../../../Downloads/knob1.png"/>
+      <FILE id="gfZD73" name="knob2.png" compile="0" resource="1" file="../../../../Downloads/knob2.png"/>
+    </GROUP>
     <GROUP id="{2ADA1F3C-CF8F-A121-ED4A-270DAB70606A}" name="Source">
+      <FILE id="EFB9pM" name="CustomGUIElements.cpp" compile="1" resource="0"
+            file="Source/CustomGUIElements.cpp"/>
+      <FILE id="Uly790" name="CustomGUIElements.h" compile="0" resource="0"
+            file="Source/CustomGUIElements.h"/>
       <FILE id="YE8iZI" name="DeckGui.cpp" compile="1" resource="0" file="Source/DeckGui.cpp"/>
       <FILE id="hq9Rhz" name="DeckGui.h" compile="0" resource="0" file="Source/DeckGui.h"/>
       <FILE id="KArzh9" name="DJAudioPlayer.cpp" compile="1" resource="0"
@@ -30,7 +43,7 @@
   </MODULES>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX">
+    <XCODE_MAC targetFolder="Builds/MacOSX" smallIcon="f6SGuF" bigIcon="f6SGuF">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="Dj-app"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="Dj-app"/>

@@ -9,7 +9,7 @@
 */
 
 #include <JuceHeader.h>
-#include "DeckGUI.h"
+#include "DeckGui.h"
 
 //==============================================================================
 DeckGUI::DeckGUI(DJAudioPlayer& player)
@@ -34,6 +34,7 @@ DeckGUI::DeckGUI(DJAudioPlayer& player)
     loadButton.addListener(this);
     
     //Gain dial
+    gainDial.setLookAndFeel(&customDial);
     addAndMakeVisible(gainDial);
     gainDial.setSliderStyle(juce::Slider::RotaryVerticalDrag);  //Change slider into Dial
     gainDial.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);    //Remove gain slider value box
@@ -42,6 +43,7 @@ DeckGUI::DeckGUI(DJAudioPlayer& player)
     gainDial.setValue(0.5);
     
     //Position slider
+    //posSlider.setLookAndFeel(&customSlider);
     addAndMakeVisible(posSlider);
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);     //Remove text box from position slider
     posSlider.addListener(this);
@@ -49,7 +51,9 @@ DeckGUI::DeckGUI(DJAudioPlayer& player)
     posSlider.setValue(0);
     
     //Speed slider
+    speedSlider.setLookAndFeel(&customSlider);
     addAndMakeVisible(speedSlider);
+    speedSlider.setSliderStyle(juce::Slider::LinearVertical);
     speedSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     speedSlider.addListener(this);
     speedSlider.setRange(0, 2);
@@ -58,6 +62,7 @@ DeckGUI::DeckGUI(DJAudioPlayer& player)
 
 DeckGUI::~DeckGUI()
 {
+    
 }
 
 void DeckGUI::paint (juce::Graphics& g)
@@ -68,22 +73,20 @@ void DeckGUI::paint (juce::Graphics& g)
        You should replace everything in this method with your own
        drawing code..
     */
-
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
 }
 
 void DeckGUI::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    auto rowH = getHeight() / 9;
+    auto rowH = getHeight() / 8;
     
-    loadButton.setBounds(0, 0*rowH, getWidth()/6, rowH);    //Load button
-    playPauseButton.setBounds(getWidth()/6, 0*rowH, getWidth()/6, rowH); //Play Button
-    stopButton.setBounds(getWidth()/3, 0*rowH, getWidth()/6, rowH); //Stop Button
+    loadButton.setBounds(0, 0.5*rowH, getWidth()/5, rowH/2);    //Load button
+    playPauseButton.setBounds(getWidth()/5, 0.5*rowH, getWidth()/5, rowH/2); //Play Button
+    stopButton.setBounds(getWidth()/2.5, 0.5*rowH, getWidth()/5, rowH/2); //Stop Button
     gainDial.setBounds(getWidth()/1.2, 0.05*rowH, getWidth()/6, rowH);  //Gain Slider
-    speedSlider.setBounds(getWidth()/2, 0*rowH, getWidth()/2.8, rowH);   //Speed slider
-    posSlider.setBounds(0, 1*rowH, getWidth(), rowH);  //Position Slider
+    speedSlider.setBounds(getWidth()/70, 1.5*rowH, getWidth()/10, getHeight()/2);   //Speed slider
+    posSlider.setBounds(getWidth()/9, 7*rowH, getWidth()/1.11, rowH);  //Position Slider
 }
 
 void DeckGUI::buttonClicked(juce::Button * button){
@@ -125,7 +128,7 @@ void DeckGUI::sliderValueChanged(juce::Slider * slider){
         DBG("Maincomponent::sliderValueChanged: position slider value changed" << posSlider.getValue());
         djAudioPlayer.setPositionRelative(slider->getValue());
     } else if(&speedSlider == slider) {
-        DBG("Maincomponent::sliderValueChanged: speed slider value changed" << posSlider.getValue());
+        DBG("Maincomponent::sliderValueChanged: speed slider value changed" << speedSlider.getValue());
         djAudioPlayer.setSpeed(slider->getValue());
     }
 }
