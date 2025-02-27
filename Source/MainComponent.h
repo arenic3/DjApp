@@ -1,7 +1,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "DeckGui.h"
+#include "DeckGUI.h"
+#include "FileManager.h"
 
 using namespace juce;
 
@@ -38,6 +39,7 @@ private:
     DeckGUI deck2{player2};
     MixerAudioSource mixerSource;
     juce::Image background;
+    FileManager fileManager{player1, player2};
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

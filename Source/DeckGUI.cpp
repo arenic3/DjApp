@@ -9,7 +9,7 @@
 */
 
 #include <JuceHeader.h>
-#include "DeckGui.h"
+#include "DeckGUI.h"
 
 //==============================================================================
 DeckGUI::DeckGUI(DJAudioPlayer& player)

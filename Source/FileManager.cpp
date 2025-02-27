@@ -43,8 +43,8 @@ FileManager::~FileManager()
 void FileManager::paint (juce::Graphics& g)
 {
     table.setColour(table.backgroundColourId, juce::Colours::transparentWhite);
-    background = juce::ImageCache::getFromMemory(BinaryData::Bg2_jpeg, BinaryData::Bg2_jpegSize);
-    g.drawImageWithin(background, 0, getHeight()/2, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit);
+    //background = juce::ImageCache::getFromMemory(BinaryData::Bg2_jpeg, BinaryData::Bg2_jpegSize);
+    //g.drawImageWithin(background, 0, getHeight()/2, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit);
 }
 
 void FileManager::resized()
