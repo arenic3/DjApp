@@ -31,9 +31,9 @@ FileManager::FileManager(DJAudioPlayer& player1, DJAudioPlayer& player2) : djAud
     table.getHeader().setOpaque(true);
     
     table.getHeader().addColumn("File Name", 1, 200);
-    table.getHeader().addColumn("Duration", 2, 200);
-    table.getHeader().addColumn("Load to Deck", 3, 200);
-    table.getHeader().addColumn("Remove from Deck", 4, 200);
+    table.getHeader().addColumn("Song Name", 2, 200);
+    table.getHeader().addColumn("Artist", 3, 200);
+    table.getHeader().addColumn("Duration", 4, 200);
 }
 
 FileManager::~FileManager()

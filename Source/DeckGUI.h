@@ -39,5 +39,6 @@ private:
     juce::Slider gainDial;
     juce::Slider posSlider;
     juce::Slider speedSlider;
+    juce::Label speedLabel;
     DJAudioPlayer& djAudioPlayer;
 };

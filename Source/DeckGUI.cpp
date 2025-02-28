@@ -58,6 +58,11 @@ DeckGUI::DeckGUI(DJAudioPlayer& player)
     speedSlider.addListener(this);
     speedSlider.setRange(0, 2);
     speedSlider.setValue(1);
+    
+    addAndMakeVisible(speedLabel);
+    speedLabel.setText("SPEED", juce::dontSendNotification);
+    speedLabel.setColour(speedLabel.textColourId, juce::Colours::black);
+    speedLabel.attachToComponent(&speedSlider, false);
 }
 
 DeckGUI::~DeckGUI()
@@ -79,14 +84,14 @@ void DeckGUI::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    auto rowH = getHeight() / 8;
+    auto rowH = getHeight() / 6;
     
-    loadButton.setBounds(0, 0.5*rowH, getWidth()/5, rowH/2);    //Load button
-    playPauseButton.setBounds(getWidth()/5, 0.5*rowH, getWidth()/5, rowH/2); //Play Button
-    stopButton.setBounds(getWidth()/2.5, 0.5*rowH, getWidth()/5, rowH/2); //Stop Button
-    gainDial.setBounds(getWidth()/1.2, 0.05*rowH, getWidth()/6, rowH);  //Gain Slider
-    speedSlider.setBounds(getWidth()/70, 1.5*rowH, getWidth()/10, getHeight()/2);   //Speed slider
-    posSlider.setBounds(getWidth()/9, 7*rowH, getWidth()/1.11, rowH);  //Position Slider
+    //loadButton.setBounds(0, 0, getWidth()/5, rowH/2);    //Load button
+    playPauseButton.setBounds(0, 0, getWidth()/5, 1.2*rowH); //Play Button
+    stopButton.setBounds(getWidth()/5, 0, getWidth()/5, 1.2*rowH); //Stop Button
+    gainDial.setBounds(getWidth()/1.2, -7, getWidth()/6, 1.6*rowH);  //Gain Slider
+    speedSlider.setBounds(getWidth()/70, 1.8*rowH, getWidth()/10, getHeight()/2);   //Speed slider
+    posSlider.setBounds(getWidth()/9, 5.5*rowH, getWidth()/1.11, rowH);  //Position Slider
 }
 
 void DeckGUI::buttonClicked(juce::Button * button){
