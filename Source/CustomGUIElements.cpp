@@ -39,9 +39,9 @@ void CustomGUIDial::drawRotarySlider(juce::Graphics& g, int x, int y, int width,
     }
 }
 
-CustomGUISlider::CustomGUISlider()
+CustomGUISlider::CustomGUISlider() 
 {
-    speedSliderImg = juce::ImageFileFormat::loadFrom(BinaryData::slider2_png, BinaryData::slider2_pngSize);
+    speedSliderImg = juce::ImageFileFormat::loadFrom(BinaryData::slider3_png, BinaryData::slider3_pngSize);
 }
 
 void CustomGUISlider::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, juce::Slider::SliderStyle, juce::Slider& slider)

@@ -4,6 +4,7 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
   <MAINGROUP id="UYCR4n" name="Dj-app">
     <GROUP id="{82BC0E0C-DB65-2EED-3B5E-F341CE3C69FE}" name="Assets">
+      <FILE id="DCHphU" name="slider3.png" compile="0" resource="1" file="../../../../Downloads/slider3.png"/>
       <FILE id="rgY6gu" name="play.png" compile="0" resource="1" file="../../../../Downloads/play.png"/>
       <FILE id="qGwXPp" name="Bg.png" compile="0" resource="1" file="../../../../Library/Mobile Documents/com~apple~CloudDocs/Bg.png"/>
       <FILE id="f6SGuF" name="icon.png" compile="0" resource="1" file="../../../../Downloads/icon.png"/>
@@ -17,8 +18,8 @@
             file="Source/CustomGUIElements.cpp"/>
       <FILE id="Uly790" name="CustomGUIElements.h" compile="0" resource="0"
             file="Source/CustomGUIElements.h"/>
-      <FILE id="YE8iZI" name="DeckGui.cpp" compile="1" resource="0" file="Source/DeckGui.cpp"/>
-      <FILE id="hq9Rhz" name="DeckGui.h" compile="0" resource="0" file="Source/DeckGui.h"/>
+      <FILE id="YE8iZI" name="DeckGUI.cpp" compile="1" resource="0" file="Source/DeckGUI.cpp"/>
+      <FILE id="hq9Rhz" name="DeckGUI.h" compile="0" resource="0" file="Source/DeckGUI.h"/>
       <FILE id="KArzh9" name="DJAudioPlayer.cpp" compile="1" resource="0"
             file="Source/DJAudioPlayer.cpp"/>
       <FILE id="YyI4PX" name="DJAudioPlayer.h" compile="0" resource="0" file="Source/DJAudioPlayer.h"/>
