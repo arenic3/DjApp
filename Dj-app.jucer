@@ -4,6 +4,7 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
   <MAINGROUP id="UYCR4n" name="Dj-app">
     <GROUP id="{82BC0E0C-DB65-2EED-3B5E-F341CE3C69FE}" name="Assets">
+      <FILE id="FfumfP" name="bg2.png" compile="0" resource="1" file="../../../../Library/Mobile Documents/com~apple~CloudDocs/bg2.png"/>
       <FILE id="DCHphU" name="slider3.png" compile="0" resource="1" file="../../../../Downloads/slider3.png"/>
       <FILE id="rgY6gu" name="play.png" compile="0" resource="1" file="../../../../Downloads/play.png"/>
       <FILE id="qGwXPp" name="Bg.png" compile="0" resource="1" file="../../../../Library/Mobile Documents/com~apple~CloudDocs/Bg.png"/>
@@ -14,6 +15,12 @@
       <FILE id="gfZD73" name="knob2.png" compile="0" resource="1" file="../../../../Downloads/knob2.png"/>
     </GROUP>
     <GROUP id="{2ADA1F3C-CF8F-A121-ED4A-270DAB70606A}" name="Source">
+      <FILE id="O22co0" name="WaveformDisplay.cpp" compile="1" resource="0"
+            file="Source/WaveformDisplay.cpp"/>
+      <FILE id="HUVJ9Z" name="WaveformDisplay.h" compile="0" resource="0"
+            file="Source/WaveformDisplay.h"/>
+      <FILE id="Bbpj2S" name="FileManager.h" compile="0" resource="0" file="Source/FileManager.h"/>
+      <FILE id="s2CP3o" name="FileManager.cpp" compile="1" resource="0" file="Source/FileManager.cpp"/>
       <FILE id="EFB9pM" name="CustomGUIElements.cpp" compile="1" resource="0"
             file="Source/CustomGUIElements.cpp"/>
       <FILE id="Uly790" name="CustomGUIElements.h" compile="0" resource="0"

@@ -12,26 +12,23 @@
 #include "DeckGUI.h"
 
 //==============================================================================
-DeckGUI::DeckGUI(DJAudioPlayer& player)
-: djAudioPlayer(player)
+DeckGUI::DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerToUse, juce::AudioThumbnailCache& cacheToUse)
+: waveformDisplay(formatManagerToUse, cacheToUse, player), djAudioPlayer(player)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
     
     //Play / Pause button
+    playPauseButton.setLookAndFeel(&customButton);
     addAndMakeVisible(playPauseButton);
-    playPauseButton.setButtonText("Play");
+    playPauseButton.setButtonText("Play/Pause");
     playPauseButton.addListener(this);
     
     //Stop button
+    stopButton.setLookAndFeel(&customButton);
     addAndMakeVisible(stopButton);
     stopButton.setButtonText("Stop");
     stopButton.addListener(this);
-    
-    //Load file button
-    addAndMakeVisible(loadButton);
-    loadButton.setButtonText("Load file");
-    loadButton.addListener(this);
     
     //Gain dial
     gainDial.setLookAndFeel(&customDial);
@@ -51,18 +48,20 @@ DeckGUI::DeckGUI(DJAudioPlayer& player)
     posSlider.setValue(0);
     
     //Speed slider
-    speedSlider.setLookAndFeel(&customSlider);
+    speedSlider.setLookAndFeel(&customDial);
     addAndMakeVisible(speedSlider);
-    speedSlider.setSliderStyle(juce::Slider::LinearVertical);
+    speedSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     speedSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     speedSlider.addListener(this);
     speedSlider.setRange(0, 2);
     speedSlider.setValue(1);
     
     addAndMakeVisible(speedLabel);
-    speedLabel.setText("SPEED", juce::dontSendNotification);
     speedLabel.setColour(speedLabel.textColourId, juce::Colours::black);
     speedLabel.attachToComponent(&speedSlider, false);
+    
+    //Waveform
+    addAndMakeVisible(waveformDisplay);
 }
 
 DeckGUI::~DeckGUI()
@@ -72,26 +71,40 @@ DeckGUI::~DeckGUI()
 
 void DeckGUI::paint (juce::Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
+    posSlider.setColour(posSlider.backgroundColourId, juce::Colour(250, 150, 40));
+    
+    float cornerSize = 10.0f;
+    auto innerBounds = getLocalBounds().toFloat().reduced(10.0f);
+    auto outerBounds = getLocalBounds().toFloat().reduced(7.0f);
+    
+    juce::Path path;
+    path.addRoundedRectangle(outerBounds, cornerSize);
+    
+    juce::DropShadow shadow (juce::Colours::black.withAlpha(0.5f), 15, juce::Point<int> (0, 0));
+    shadow.drawForPath (g, path);
+    
+    g.setColour(juce::Colours::lightgrey);
+    g.fillRoundedRectangle(innerBounds, cornerSize);
+    
+    g.setColour(juce::Colours::lightgrey.withAlpha(0.5f));
+    g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
 }
 
 void DeckGUI::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
+    
     auto rowH = getHeight() / 6;
+    auto columnW = getWidth()/5;
     
     //loadButton.setBounds(0, 0, getWidth()/5, rowH/2);    //Load button
-    playPauseButton.setBounds(0, 0, getWidth()/5, 1.2*rowH); //Play Button
-    stopButton.setBounds(getWidth()/5, 0, getWidth()/5, 1.2*rowH); //Stop Button
-    gainDial.setBounds(getWidth()/1.2, -7, getWidth()/6, 1.6*rowH);  //Gain Slider
-    speedSlider.setBounds(getWidth()/70, 1.8*rowH, getWidth()/10, getHeight()/2);   //Speed slider
-    posSlider.setBounds(getWidth()/9, 5.5*rowH, getWidth()/1.11, rowH);  //Position Slider
+    playPauseButton.setBounds(columnW, getHeight()/1.3, columnW, 1.15*rowH); //Play Button
+    stopButton.setBounds(2*columnW, getHeight()/1.3, columnW, 1.15*rowH); //Stop Button
+    gainDial.setBounds(getWidth()/1.2, rowH*4.4, getWidth()/6, 1.6*rowH);  //Gain Slider
+    speedSlider.setBounds(5, rowH*4.4, getWidth()/6, 1.6*rowH);   //Speed slider
+    posSlider.setBounds(15, 2*rowH, getWidth()/1.05, rowH);  //Position Slider
+    waveformDisplay.setBounds(15, 1.4*rowH, getWidth()/1.05, rowH); //Waveform
 }
 
 void DeckGUI::buttonClicked(juce::Button * button){
@@ -115,13 +128,6 @@ void DeckGUI::buttonClicked(juce::Button * button){
         djAudioPlayer.setPosition(0);
     }
     
-    if(&loadButton == button) {
-        FileChooser chooser{"choose a file to play..."};
-        if(chooser.browseForFileToOpen()){
-            auto url = URL(chooser.getResult());
-            djAudioPlayer.loadURL(url);
-        }
-    }
 }
 
 void DeckGUI::sliderValueChanged(juce::Slider * slider){
@@ -135,5 +141,14 @@ void DeckGUI::sliderValueChanged(juce::Slider * slider){
     } else if(&speedSlider == slider) {
         DBG("Maincomponent::sliderValueChanged: speed slider value changed" << speedSlider.getValue());
         djAudioPlayer.setSpeed(slider->getValue());
+    }
+}
+
+void DeckGUI::loadWaveform()
+{
+    if(djAudioPlayer.isLoaded)
+    {
+        auto url = djAudioPlayer.lurl;
+        waveformDisplay.loadURL(url);
     }
 }

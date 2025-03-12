@@ -12,6 +12,8 @@
 
 #include <JuceHeader.h>
 #include "DJAudioPlayer.h"
+#include "CustomGUIElements.h"
+#include "DeckGUI.h"
 
 //==============================================================================
 /*
@@ -19,7 +21,7 @@
 class FileManager  : public juce::Component, public juce::TableListBoxModel, public juce::FileDragAndDropTarget, public juce::Button::Listener
 {
 public:
-    FileManager(DJAudioPlayer& player1, DJAudioPlayer& player2);
+    FileManager(DJAudioPlayer& player1, DJAudioPlayer& player2, DeckGUI& deck, DeckGUI& secondDeck);
     ~FileManager() override;
 
     void paint (juce::Graphics&) override;
@@ -40,10 +42,14 @@ public:
 
     
 private:
+    CustomGUITable customTable;
+    CustomGUIButton customButtons;
     juce::TableListBox table;
     std::vector<juce::File> audioFiles;
     DJAudioPlayer& djAudioPlayer1;
     DJAudioPlayer& djAudioPlayer2;
+    DeckGUI& deck1;
+    DeckGUI& deck2;
     juce::TextButton addButton;
     juce::TextButton deck1Button;
     juce::TextButton removeButton;

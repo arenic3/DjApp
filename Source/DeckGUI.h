@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "DJAudioPlayer.h"
 #include "CustomGUIElements.h"
+#include "WaveformDisplay.h"
 
 //==============================================================================
 /*
@@ -20,7 +21,7 @@
 class DeckGUI  : public juce::Component, public juce::Button::Listener, public juce::Slider::Listener
 {
 public:
-    DeckGUI(DJAudioPlayer& player);
+    DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerToUse, juce::AudioThumbnailCache& cacheToUse);
     ~DeckGUI() override;
 
     void paint (juce::Graphics&) override;
@@ -28,17 +29,21 @@ public:
     
     void buttonClicked(juce::Button * button) override;
     void sliderValueChanged(juce::Slider * slider) override;
+    
+    void loadWaveform();
 
 private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeckGUI)
+    WaveformDisplay waveformDisplay;
     CustomGUIDial customDial;
     CustomGUISlider customSlider;
+    CustomGUIButton customButton;
     juce::TextButton playPauseButton;
     juce::TextButton stopButton;
-    juce::TextButton loadButton;
     juce::Slider gainDial;
     juce::Slider posSlider;
     juce::Slider speedSlider;
     juce::Label speedLabel;
     DJAudioPlayer& djAudioPlayer;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeckGUI)
 };

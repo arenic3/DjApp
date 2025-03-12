@@ -1,6 +1,6 @@
 /*
   ==============================================================================
-
+r
     FileManager.cpp
     Created: 27 Feb 2025 10:51:40am
     Author:  Nicolas Arellano
@@ -12,28 +12,36 @@
 #include "FileManager.h"
 
 //==============================================================================
-FileManager::FileManager(DJAudioPlayer& player1, DJAudioPlayer& player2) : djAudioPlayer1(player1), djAudioPlayer2(player2)
+FileManager::FileManager(DJAudioPlayer& player1, DJAudioPlayer& player2, DeckGUI& deck, DeckGUI& secondDeck) : djAudioPlayer1(player1), djAudioPlayer2(player2), deck1(deck), deck2(secondDeck)
 {
+    addButton.setLookAndFeel(&customButtons);
     addAndMakeVisible(addButton);
+    addButton.setButtonText("Browse Files");
+    removeButton.setLookAndFeel(&customButtons);
     addAndMakeVisible(removeButton);
+    removeButton.setButtonText("Remove File");
+    deck1Button.setLookAndFeel(&customButtons);
     addAndMakeVisible(deck1Button);
+    deck1Button.setButtonText("Load to Deck 1");
+    deck2Button.setLookAndFeel(&customButtons);
     addAndMakeVisible(deck2Button);
+    deck2Button.setButtonText("Load to Deck 2");
     
     addButton.addListener(this);
     removeButton.addListener(this);
     deck1Button.addListener(this);
     deck2Button.addListener(this);
     
+    table.getHeader().setLookAndFeel(&customTable);
     addAndMakeVisible(table);
     table.setModel(this);
     table.setOpaque(false);
     table.getViewport()->setOpaque(false);
-    table.getHeader().setOpaque(true);
     
-    table.getHeader().addColumn("File Name", 1, 200);
-    table.getHeader().addColumn("Song Name", 2, 200);
-    table.getHeader().addColumn("Artist", 3, 200);
-    table.getHeader().addColumn("Duration", 4, 200);
+    table.getHeader().addColumn("File Name", 1, 270);
+    table.getHeader().addColumn("Song Name", 2, 280);
+    table.getHeader().addColumn("Artist", 3, 270);
+    table.getHeader().addColumn("Duration", 4, 140);
 }
 
 FileManager::~FileManager()
@@ -42,21 +50,35 @@ FileManager::~FileManager()
 
 void FileManager::paint (juce::Graphics& g)
 {
-    table.setColour(table.backgroundColourId, juce::Colours::transparentWhite);
-    //background = juce::ImageCache::getFromMemory(BinaryData::Bg2_jpeg, BinaryData::Bg2_jpegSize);
-    //g.drawImageWithin(background, 0, getHeight()/2, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit);
+    float cornerSize = 10.0f;
+    auto innerBounds = getLocalBounds().toFloat().reduced(10.0f);
+    auto outerBounds = getLocalBounds().toFloat().reduced(8.0f);
+    
+    juce::Path path;
+    path.addRoundedRectangle(outerBounds, cornerSize);
+    
+    juce::DropShadow shadow (juce::Colours::black.withAlpha(0.5f), 10, juce::Point<int> (0, 0));
+    shadow.drawForPath (g, path);
+    
+    g.setColour(juce::Colours::lightgrey.withAlpha(0.5f));
+    g.fillRoundedRectangle(innerBounds, cornerSize);
+    
+    g.setColour(juce::Colours::orange.withAlpha(0.5f));
+    g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
+    
+    table.setColour(table.backgroundColourId, juce::Colours::orange.withAlpha(0.2f));
 }
 
 void FileManager::resized()
 {
     float height = getHeight()/8;
     
-    addButton.setBounds(0, 3.5*height, getWidth()/4, height/2);
-    removeButton.setBounds(getWidth()/4, 3.5*height, getWidth()/4, height/2);
-    deck1Button.setBounds(getWidth()/2, 3.5*height, getWidth()/4, height/2);
-    deck2Button.setBounds(getWidth()/1.33, 3.5*height, getWidth()/4, height/2);
+    table.setBounds(10, 10, getWidth()-20, 3.43*height);
     
-    table.setBounds(0, 20, getWidth(), 3.2*height);
+    addButton.setBounds(0, 3.55*height, getWidth()/4, height/2);
+    removeButton.setBounds(getWidth()/4, 3.55*height, getWidth()/4, height/2);
+    deck1Button.setBounds(getWidth()/2, 3.55*height, getWidth()/4, height/2);
+    deck2Button.setBounds(getWidth()/1.333, 3.55*height, getWidth()/4, height/2);
 }
 
 int FileManager::getNumRows()
@@ -156,10 +178,12 @@ void FileManager::buttonClicked(juce::Button * button)
     else if(button == &deck1Button){
         auto selectedRow = table.getSelectedRow();
         loadFileIntoDeck(audioFiles[selectedRow], 1);
+        deck1.loadWaveform();
     }
     else if(button == &deck2Button){
         auto selectedRow = table.getSelectedRow();
         loadFileIntoDeck(audioFiles[selectedRow], 2);
+        deck2.loadWaveform();
     }
 }
 

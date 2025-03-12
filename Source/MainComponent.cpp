@@ -5,7 +5,7 @@ MainComponent::MainComponent()
 {
     // Make sure you set the size of the component after
     // you add any child components.
-    setSize (800, 600);
+    setSize (1000, 700);
 
     // Some platforms require permissions to open input channels so request that here
     if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
@@ -26,7 +26,11 @@ MainComponent::MainComponent()
     //Deck2
     addAndMakeVisible(deck2);
     
+    //FileManager
     addAndMakeVisible(fileManager);
+    
+    //Format manager
+    formatManager1.registerBasicFormats();
 }
 
 MainComponent::~MainComponent()
@@ -63,7 +67,7 @@ void MainComponent::releaseResources()
 void MainComponent::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    background = juce::ImageCache::getFromMemory(BinaryData::Bg_png, BinaryData::Bg_pngSize);
+    background = juce::ImageCache::getFromMemory(BinaryData::bg2_png, BinaryData::bg2_pngSize);
     g.drawImageWithin(background, 0, 0, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit);
 }
 
@@ -72,7 +76,7 @@ void MainComponent::resized()
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
-    deck1.setBounds(0, 0, getWidth()/2, getHeight()/2.3);  //Deck1
-    deck2.setBounds(getWidth()/2, 0, getWidth()/2, getHeight()/2.3); //Deck2
+    deck1.setBounds(0, getHeight()/4.8, getWidth()/2, getHeight()/3.3);  //Deck1
+    deck2.setBounds(getWidth()/2, getHeight()/4.8, (getWidth()/2), getHeight()/3.3); //Deck2
     fileManager.setBounds(0, getHeight()/2, getWidth(), getHeight());
 }

@@ -49,7 +49,7 @@ void CustomGUISlider::drawLinearSlider(juce::Graphics& g, int x, int y, int widt
     if(speedSliderImg.isValid()){
         const double position = (slider.getValue() - slider.getMinimum()) / (slider.getMaximum() - slider.getMinimum());
         
-        const int frames = 100;
+        const int frames = speedSliderImg.getHeight() / speedSliderImg.getWidth();
         const int frameId = (int)ceil(position * ((double)frames - 1.0));
 
         g.drawImage(speedSliderImg, 0, 0, (int)width, (int)height, 0, frameId*(speedSliderImg.getHeight()/frames), speedSliderImg.getWidth(), speedSliderImg.getHeight()/frames);
@@ -63,12 +63,44 @@ void CustomGUISlider::drawLinearSlider(juce::Graphics& g, int x, int y, int widt
 
 CustomGUIButton::CustomGUIButton()
 {
-    playButtonImg = juce::ImageFileFormat::loadFrom(BinaryData::play_png, BinaryData::play_pngSize);
+    //playButtonImg = juce::ImageFileFormat::loadFrom(BinaryData::play_png, BinaryData::play_pngSize);
 }
 
 void CustomGUIButton::drawButtonBackground(juce::Graphics& g, juce::Button& button, const juce::Colour& c, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown)
 {
-    if(playButtonImg.isValid()){
+    auto cornerSize = 0.0f;
+    auto bounds = button.getLocalBounds().toFloat();
     
+    juce::Colour color = juce::Colour(220, 150, 50);
+    
+    if(shouldDrawButtonAsHighlighted)
+    {
+        color = color.contrasting(juce::Colours::orange, 0.01f);
+    } else if (shouldDrawButtonAsDown)
+    {
+        color = color.contrasting(juce::Colours::orangered, 0.1f);
     }
+    
+    g.setColour(color);
+    g.fillRoundedRectangle(bounds, cornerSize);
+    
+    g.setColour(juce::Colours::black.withAlpha(0.5f));
+    g.drawRoundedRectangle(bounds, cornerSize, 1.0f);
+}
+
+CustomGUITable::CustomGUITable()
+{
+    
+}
+
+void CustomGUITable::drawTableHeaderBackground(juce::Graphics& g, juce::TableHeaderComponent& header)
+{
+    auto bounds = header.getLocalBounds().toFloat();
+    auto cornerSize = 10.0f;
+    
+    g.setColour(juce::Colour(230, 150, 70));
+    g.fillRoundedRectangle(bounds, cornerSize);
+    
+    g.setColour(juce::Colours::black.withAlpha(0.5f));
+    //g.drawRoundedRectangle(bounds, cornerSize, 1.0f);
 }

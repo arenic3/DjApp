@@ -33,13 +33,15 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
-    DJAudioPlayer player1;
-    DeckGUI deck1{player1};
-    DJAudioPlayer player2;
-    DeckGUI deck2{player2};
+    AudioFormatManager formatManager1;
+    AudioThumbnailCache thumbCache{20};
+    DJAudioPlayer player1{formatManager1};
+    DeckGUI deck1{player1, formatManager1, thumbCache};
+    DJAudioPlayer player2{formatManager1};
+    DeckGUI deck2{player2, formatManager1, thumbCache};
     MixerAudioSource mixerSource;
-    juce::Image background;
-    FileManager fileManager{player1, player2};
+    Image background;
+    FileManager fileManager{player1, player2, deck1, deck2};
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

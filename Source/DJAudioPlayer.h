@@ -16,7 +16,7 @@ using namespace juce;
 
 class DJAudioPlayer : public AudioSource {
 public:
-    DJAudioPlayer();
+    DJAudioPlayer(juce::AudioFormatManager& afm);
     ~DJAudioPlayer();
     
     bool loadURL(const juce::URL& url);
@@ -31,10 +31,12 @@ public:
     void releaseResources() override;
     void setPositionRelative(double pos);
     
+    bool isLoaded = false;
+    juce::URL lurl;
     bool playing = false;
     
 private:
-    juce::AudioFormatManager formatManager;
+    juce::AudioFormatManager& formatManager;
     std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
     juce::AudioTransportSource transportSource;
     juce::ResamplingAudioSource resampleSource{&transportSource, false, 2};

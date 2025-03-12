@@ -44,6 +44,12 @@ private:
     juce::Image playButtonImg;
 };
 
-
-
-
+class CustomGUITable : public juce::LookAndFeel_V4
+{
+public:
+    CustomGUITable();
+    
+    void drawTableHeaderBackground(juce::Graphics& g, juce::TableHeaderComponent& header) override;
+    
+private:
+};

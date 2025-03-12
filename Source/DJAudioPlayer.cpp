@@ -10,12 +10,9 @@
 
 #include "DJAudioPlayer.h"
 
-DJAudioPlayer::DJAudioPlayer(){
-    formatManager.registerBasicFormats();
-}
+DJAudioPlayer::DJAudioPlayer(juce::AudioFormatManager& afm) : formatManager(afm) { }
 
-DJAudioPlayer::~DJAudioPlayer(){
-}
+DJAudioPlayer::~DJAudioPlayer() { }
 
 bool DJAudioPlayer::loadURL(const juce::URL& url){
     auto * reader = formatManager.createReaderFor(url.getLocalFile());
@@ -23,8 +20,11 @@ bool DJAudioPlayer::loadURL(const juce::URL& url){
         auto newSource = std::make_unique<AudioFormatReaderSource>(reader, true);
         transportSource.setSource(newSource.get(), 0, nullptr, reader->sampleRate);
         readerSource = std::move(newSource);
+        lurl = url;
+        isLoaded = true;
         return true;
     }
+    isLoaded = false;
     return false;
 }
 
