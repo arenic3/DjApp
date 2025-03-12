@@ -38,7 +38,6 @@ void DJAudioPlayer::stop(){
 
 void DJAudioPlayer::setPosition(double posInSecs){
     if(posInSecs < 0. || posInSecs > transportSource.getLengthInSeconds()){
-        DBG("DJAudioPlayer::setPosition: warning: set position " << posInSecs << " greater than length " << transportSource.getLengthInSeconds());
         return;
     }
     transportSource.setPosition(posInSecs);
@@ -50,7 +49,6 @@ void DJAudioPlayer::setGain(double gain){
 
 void DJAudioPlayer::setSpeed(double ratio){
     if(ratio <= 0.){
-        DBG("DJAudioPlayer::setSpeed: ratio must be greater than 0");
     } else {
         resampleSource.setResamplingRatio(ratio);
     }
@@ -78,3 +76,14 @@ void DJAudioPlayer::setPositionRelative(double pos){
     auto posInSecs = pos * transportSource.getLengthInSeconds();
     setPosition(posInSecs);
 }
+
+double DJAudioPlayer::getPosition() const {
+    return transportSource.getCurrentPosition();
+}
+
+double DJAudioPlayer::getPositionRelative() const {
+    auto len = transportSource.getLengthInSeconds();
+    if(len > 0.) return getPosition() / len;
+    return 0.;
+}
+

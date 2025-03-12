@@ -18,7 +18,7 @@
 //==============================================================================
 /*
 */
-class DeckGUI  : public juce::Component, public juce::Button::Listener, public juce::Slider::Listener
+class DeckGUI  : public juce::Component, public juce::Button::Listener, public juce::Slider::Listener, public juce::Timer
 {
 public:
     DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerToUse, juce::AudioThumbnailCache& cacheToUse);
@@ -31,6 +31,7 @@ public:
     void sliderValueChanged(juce::Slider * slider) override;
     
     void loadWaveform();
+    void timerCallback() override;
 
 private:
     WaveformDisplay waveformDisplay;

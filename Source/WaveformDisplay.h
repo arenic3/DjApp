@@ -27,12 +27,14 @@ public:
     
     bool loadURL(const juce::URL& url);
     void changeListenerCallback(juce::ChangeBroadcaster * source) override;
+    void setPositionRelative(double pos);
 
 private:
     juce::AudioThumbnail audioThumbnail;
     DJAudioPlayer& djAudioPlayer;
     
     bool fileLoaded = false;
+    double position = 0.;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaveformDisplay)
 };

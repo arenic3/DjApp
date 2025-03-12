@@ -30,6 +30,8 @@ public:
     void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) override;
     void releaseResources() override;
     void setPositionRelative(double pos);
+    double getPosition() const;
+    double getPositionRelative() const;
     
     bool isLoaded = false;
     juce::URL lurl;

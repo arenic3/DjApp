@@ -62,17 +62,18 @@ DeckGUI::DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerT
     
     //Waveform
     addAndMakeVisible(waveformDisplay);
+    
+    //Timer
+    startTimer(50);
 }
 
 DeckGUI::~DeckGUI()
 {
-    
+    stopTimer();
 }
 
 void DeckGUI::paint (juce::Graphics& g)
 {
-    posSlider.setColour(posSlider.backgroundColourId, juce::Colour(250, 150, 40));
-    
     float cornerSize = 10.0f;
     auto innerBounds = getLocalBounds().toFloat().reduced(10.0f);
     auto outerBounds = getLocalBounds().toFloat().reduced(7.0f);
@@ -88,6 +89,8 @@ void DeckGUI::paint (juce::Graphics& g)
     
     g.setColour(juce::Colours::lightgrey.withAlpha(0.5f));
     g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
+    
+    posSlider.setValue(djAudioPlayer.getPositionRelative());
 }
 
 void DeckGUI::resized()
@@ -103,14 +106,13 @@ void DeckGUI::resized()
     stopButton.setBounds(2*columnW, getHeight()/1.3, columnW, 1.15*rowH); //Stop Button
     gainDial.setBounds(getWidth()/1.2, rowH*4.4, getWidth()/6, 1.6*rowH);  //Gain Slider
     speedSlider.setBounds(5, rowH*4.4, getWidth()/6, 1.6*rowH);   //Speed slider
-    posSlider.setBounds(15, 2*rowH, getWidth()/1.05, rowH);  //Position Slider
-    waveformDisplay.setBounds(15, 1.4*rowH, getWidth()/1.05, rowH); //Waveform
+    posSlider.setBounds(0, 2.2*rowH, getWidth(), rowH);  //Position Slider
+    waveformDisplay.setBounds(15, 0.9*rowH, getWidth()/1.05, 1.5*rowH); //Waveform
 }
 
 void DeckGUI::buttonClicked(juce::Button * button){
     
     if (&playPauseButton == button) {
-        DBG("Maincomponent::buttonClicked: Play button clicked");
         if(!djAudioPlayer.playing){
             DBG("audio playing");
             djAudioPlayer.playing = true;
@@ -122,7 +124,6 @@ void DeckGUI::buttonClicked(juce::Button * button){
         }
         
     } else if (&stopButton == button) {
-        DBG("Maincomponent::buttonClicked: Stop button clicked audio restarted");
         djAudioPlayer.playing = false;
         djAudioPlayer.stop();
         djAudioPlayer.setPosition(0);
@@ -133,13 +134,10 @@ void DeckGUI::buttonClicked(juce::Button * button){
 void DeckGUI::sliderValueChanged(juce::Slider * slider){
     
     if(&gainDial == slider) {
-        DBG("Maincomponent::sliderValueChanged: gain dial value changed" << gainDial.getValue());
         djAudioPlayer.setGain(slider->getValue());
     } else if(&posSlider == slider) {
-        DBG("Maincomponent::sliderValueChanged: position slider value changed" << posSlider.getValue());
         djAudioPlayer.setPositionRelative(slider->getValue());
     } else if(&speedSlider == slider) {
-        DBG("Maincomponent::sliderValueChanged: speed slider value changed" << speedSlider.getValue());
         djAudioPlayer.setSpeed(slider->getValue());
     }
 }
@@ -151,4 +149,8 @@ void DeckGUI::loadWaveform()
         auto url = djAudioPlayer.lurl;
         waveformDisplay.loadURL(url);
     }
+}
+
+void DeckGUI::timerCallback(){
+    waveformDisplay.setPositionRelative(djAudioPlayer.getPositionRelative());
 }

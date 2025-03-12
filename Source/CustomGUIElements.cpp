@@ -12,9 +12,7 @@
 
 CustomGUIDial::CustomGUIDial()
 {
-    //juce::File dialImgFile = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("knob1.png");
     dialImg = juce::ImageFileFormat::loadFrom(BinaryData::knob2_png, BinaryData::knob2_pngSize);
-    //speedSliderImg = juce::ImageFileFormat::loadFrom(BinaryData::, BinaryData::);
 }
 
 void CustomGUIDial::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider)

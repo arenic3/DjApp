@@ -23,12 +23,14 @@ WaveformDisplay::~WaveformDisplay()
 
 void WaveformDisplay::paint (juce::Graphics& g)
 {
-    if(fileLoaded)
-    {
-        g.setColour(juce::Colours::darkorange);
-        audioThumbnail.drawChannel(g, getLocalBounds(), 0, audioThumbnail.getTotalLength(), 0, 1.);
-    } else
-    {
+    if(fileLoaded){
+        g.setGradientFill(juce::ColourGradient(juce::Colours::orange, 0, 0, juce::Colours::red, getWidth(), getHeight(), false));
+        audioThumbnail.drawChannel(g, getLocalBounds(), 0, audioThumbnail.getTotalLength(), 0, 1.0f);
+        g.setColour(juce::Colours::green);
+        int w = 4;
+        g.drawRect(position * getWidth() - w/2, 0, w, getHeight());
+        
+    } else {
         g.setColour(juce::Colours::darkorange);
         g.drawText("Waveform", 0, 0, getWidth(), getHeight(), juce::Justification::centred);
     }
@@ -50,6 +52,12 @@ bool WaveformDisplay::loadURL(const juce::URL& url)
 
 void WaveformDisplay::changeListenerCallback(juce::ChangeBroadcaster * source)
 {
-    DBG("change recieved!");
     repaint();
+}
+
+void WaveformDisplay::setPositionRelative(double pos){
+    if(pos >= 0. && pos != position){
+        position = pos;
+        repaint();
+    }
 }
