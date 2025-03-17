@@ -90,7 +90,7 @@ void DeckGUI::paint (juce::Graphics& g)
     g.setColour(juce::Colours::lightgrey.withAlpha(0.5f));
     g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
     
-    posSlider.setValue(djAudioPlayer.getPositionRelative());
+    posSlider.setValue(djAudioPlayer.getPositionRelative(), juce::NotificationType::dontSendNotification);
 }
 
 void DeckGUI::resized()

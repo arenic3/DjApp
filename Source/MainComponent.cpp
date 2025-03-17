@@ -78,5 +78,5 @@ void MainComponent::resized()
     // update their positions.
     deck1.setBounds(0, getHeight()/4, getWidth()/2, getHeight()/3.3);  //Deck1
     deck2.setBounds(getWidth()/2, getHeight()/4, (getWidth()/2), getHeight()/3.3); //Deck2
-    fileManager.setBounds(0, getHeight()/1.8, getWidth(), getHeight()/1.8);
+    fileManager.setBounds(0, getHeight()/1.8, getWidth(), getHeight()/1.13);
 }

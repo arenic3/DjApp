@@ -75,10 +75,10 @@ void FileManager::resized()
     
     table.setBounds(10, 10, getWidth()-20, 3.43*height);
     
-    juce::Rectangle footer = juce::Rectangle<int>(0, getParentHeight()/4, getWidth(), getHeight()/10);
+    //juce::Rectangle footer = juce::Rectangle<int>(0, getParentHeight()/4, getWidth(), getHeight()/10);
     
-    addButton.setSize(80, 10);
-    addButton.setBoundsToFit(footer, juce::Justification::topLeft, false);
+    //addButton.setSize(80, 10);
+    addButton.setBounds(0, 3.55*height, getWidth()/4, height/2);
     removeButton.setBounds(getWidth()/4, 3.55*height, getWidth()/4, height/2);
     deck1Button.setBounds(getWidth()/2, 3.55*height, getWidth()/4, height/2);
     deck2Button.setBounds(getWidth()/1.333, 3.55*height, getWidth()/4, height/2);

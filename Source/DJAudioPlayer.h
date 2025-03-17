@@ -34,6 +34,7 @@ public:
     double getPositionRelative() const;
     
     bool isLoaded = false;
+    bool odl = false;
     juce::URL lurl;
     bool playing = false;
     

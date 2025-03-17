@@ -22,6 +22,7 @@ bool DJAudioPlayer::loadURL(const juce::URL& url){
         readerSource = std::move(newSource);
         lurl = url;
         isLoaded = true;
+        odl = true;
         return true;
     }
     isLoaded = false;

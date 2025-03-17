@@ -30,6 +30,14 @@ void WaveformDisplay::paint (juce::Graphics& g)
         int w = 4;
         g.drawRect(position * getWidth() - w/2, 0, w, getHeight());
         
+        auto tl = audioThumbnail.getTotalLength();
+        
+        int tcS = (tl * position);
+        int tcMs = (tcS * position) / 1000;
+        int tcM = (tl * position) /60;
+        
+        std::cout << tcM << ": " << tcS << ": " << tcMs << std::endl;
+        
     } else {
         g.setColour(juce::Colours::darkorange);
         g.drawText("Waveform", 0, 0, getWidth(), getHeight(), juce::Justification::centred);
