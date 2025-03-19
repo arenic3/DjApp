@@ -48,9 +48,9 @@ DeckGUI::DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerT
     posSlider.setValue(0);
     
     //Speed slider
-    speedSlider.setLookAndFeel(&customDial);
+    speedSlider.setLookAndFeel(&customSlider);
     addAndMakeVisible(speedSlider);
-    speedSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+    speedSlider.setSliderStyle(juce::Slider::LinearVertical);
     speedSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     speedSlider.addListener(this);
     speedSlider.setRange(0, 2);
@@ -97,7 +97,7 @@ void DeckGUI::paintOverChildren(juce::Graphics& g){
     if(djAudioPlayer.isLoaded){
         auto loopRegion = djAudioPlayer.loopRegion.load();
         if(loopRegion.proper()){
-            g.setColour(juce::Colours::red);
+            g.setColour(juce::Colours::white);
             g.setOpacity(0.25);
             
             auto start = loopRegion.start();
@@ -120,10 +120,10 @@ void DeckGUI::resized()
     //loadButton.setBounds(0, 0, getWidth()/5, rowH/2);    //Load button
     playPauseButton.setBounds(columnW, getHeight()/1.3, columnW, 1.15*rowH); //Play Button
     stopButton.setBounds(2*columnW, getHeight()/1.3, columnW, 1.15*rowH); //Stop Button
-    gainDial.setBounds(getWidth()/1.2, rowH*4.4, getWidth()/6, 1.6*rowH);  //Gain Slider
-    speedSlider.setBounds(5, rowH*4.4, getWidth()/6, 1.6*rowH);   //Speed slider
-    posSlider.setBounds(0, rowH/1.9, getWidth(), rowH);  //Position Slider
-    waveformDisplay.setBoundsRelative(0.02f, 0.2f, 0.95f, 0.3f); //Waveform
+    gainDial.setBounds(getWidth()/1.2, rowH*4.2, getWidth()/6, 1.6*rowH);  //Gain Slider
+    speedSlider.setBounds(390, rowH*3.5, getWidth()/12, getHeight()/2);   //Speed slider
+    posSlider.setBounds(0, rowH/2.2, getWidth(), rowH);  //Position Slider
+    waveformDisplay.setBoundsRelative(0.021f, 0.2f, 0.961f, 0.33f); //Waveform
 }
 
 void DeckGUI::buttonClicked(juce::Button * button){

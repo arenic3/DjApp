@@ -47,7 +47,7 @@ void CustomGUISlider::drawLinearSlider(juce::Graphics& g, int x, int y, int widt
     if(speedSliderImg.isValid()){
         const double position = (slider.getValue() - slider.getMinimum()) / (slider.getMaximum() - slider.getMinimum());
         
-        const int frames = speedSliderImg.getHeight() / speedSliderImg.getWidth();
+        const int frames = 100;
         const int frameId = (int)ceil(position * ((double)frames - 1.0));
 
         g.drawImage(speedSliderImg, 0, 0, (int)width, (int)height, 0, frameId*(speedSliderImg.getHeight()/frames), speedSliderImg.getWidth(), speedSliderImg.getHeight()/frames);

@@ -27,7 +27,9 @@ void WaveformDisplay::paint (juce::Graphics& g)
 
         //Draw the waveform when the deck gets a file to play
         g.setGradientFill(juce::ColourGradient(juce::Colours::orange, 0, 0, juce::Colours::red, getWidth(), getHeight(), false));
-        audioThumbnail.drawChannel(g, getLocalBounds(), 0, audioThumbnail.getTotalLength(), 0, 1.0f);
+        auto b = getBoundsInParent();
+        b.setBounds(0, 10, getWidth(), getHeight()/1.3);
+        audioThumbnail.drawChannel(g, b, 0, audioThumbnail.getTotalLength(), 0, 1.0f);
         g.setColour(juce::Colours::green);
         int w = 4;
         g.drawRect(position * getWidth() - w/2, 0, w, getHeight());
@@ -43,11 +45,11 @@ void WaveformDisplay::paint (juce::Graphics& g)
         g.setColour(juce::Colours::white);
         g.setFont(15.0f);
         g.drawText(juce::String(tcM) + ":" + juce::String(tcS).paddedLeft('0', 2) + ":" + juce::String(tcMs).paddedLeft('0', 3),
-        10, getHeight() - 20, 100, 20, juce::Justification::left);
+        0, getHeight() - 68, 100, 20, juce::Justification::left);
         
     } else {
         g.setColour(juce::Colours::darkorange);
-        g.drawText("----", 0, 0, getWidth(), getHeight(), juce::Justification::centred);
+        g.drawText("-", 0, 0, getWidth(), getHeight(), juce::Justification::centred);
     }
 }
 
