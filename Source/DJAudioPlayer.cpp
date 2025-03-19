@@ -61,6 +61,16 @@ void DJAudioPlayer::prepareToPlay(int samplesPerBlockExpected, double sampleRate
 }
 
 void DJAudioPlayer::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill){
+    auto l = loopRegion.load();
+    if(l.proper()){
+        auto p = getPositionRelative();
+        if(p < l.start()){
+            setPositionRelative(l.start());
+        } else if(p >= l.end()){
+            setPositionRelative(l.start());
+        }
+    }
+    
     if(!readerSource.get()){
         bufferToFill.clearActiveBufferRegion();
         return;

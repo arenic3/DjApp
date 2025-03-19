@@ -25,6 +25,7 @@ public:
     ~DeckGUI() override;
 
     void paint (juce::Graphics&) override;
+    void paintOverChildren(juce::Graphics& g) override;
     void resized() override;
     
     void buttonClicked(juce::Button * button) override;
@@ -32,6 +33,9 @@ public:
     
     void loadWaveform();
     void timerCallback() override;
+    
+    void mouseDown(const juce::MouseEvent& event) override;
+    void mouseDrag(const juce::MouseEvent& event) override;
 
 private:
     WaveformDisplay waveformDisplay;

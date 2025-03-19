@@ -30,7 +30,6 @@ public:
     int getNumRows() override;
     void paintRowBackground(juce::Graphics& g, int rowNumber, int width, int height, bool rowIsSelected) override;
     void paintCell(juce::Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
-    juce::Component * refreshComponentForCell(int rowNumber, int ColumnId, bool isRowSelected, juce::Component * existingComponentToUpdate) override;
     
     bool isInterestedInFileDrag(const juce::StringArray& files) override;
     void filesDropped(const juce::StringArray& files, int x, int y) override;

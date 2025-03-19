@@ -11,6 +11,7 @@
       <FILE id="gfZD73" name="knob2.png" compile="0" resource="1" file="../../../../Downloads/knob2.png"/>
     </GROUP>
     <GROUP id="{2ADA1F3C-CF8F-A121-ED4A-270DAB70606A}" name="Source">
+      <FILE id="WfQJgc" name="Interval.h" compile="0" resource="0" file="Source/Interval.h"/>
       <FILE id="O22co0" name="WaveformDisplay.cpp" compile="1" resource="0"
             file="Source/WaveformDisplay.cpp"/>
       <FILE id="HUVJ9Z" name="WaveformDisplay.h" compile="0" resource="0"

@@ -62,6 +62,7 @@ DeckGUI::DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerT
     
     //Waveform
     addAndMakeVisible(waveformDisplay);
+    waveformDisplay.addMouseListener(this, false);
     
     //Timer
     startTimer(20);
@@ -89,9 +90,23 @@ void DeckGUI::paint (juce::Graphics& g)
     g.setColour(juce::Colours::lightgrey.withAlpha(0.5f));
     g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
     
-    posSlider.setValue(djAudioPlayer.getPositionRelative(), juce::NotificationType::dontSendNotification);
-    
     waveformWindow = juce::Rectangle<int>();
+}
+
+void DeckGUI::paintOverChildren(juce::Graphics& g){
+    if(djAudioPlayer.isLoaded){
+        auto loopRegion = djAudioPlayer.loopRegion.load();
+        if(loopRegion.proper()){
+            g.setColour(juce::Colours::red);
+            g.setOpacity(0.25);
+            
+            auto start = loopRegion.start();
+            auto length = loopRegion.length();
+            auto b = waveformDisplay.getBoundsInParent();
+            b.setBounds(start* b.getWidth() + b.getX(), b.getY(), length * b.getWidth(), b.getHeight());
+            g.fillRect(b);
+        }
+    }
 }
 
 void DeckGUI::resized()
@@ -154,4 +169,22 @@ void DeckGUI::loadWaveform()
 
 void DeckGUI::timerCallback(){
     waveformDisplay.setPositionRelative(djAudioPlayer.getPositionRelative());
+}
+
+void DeckGUI::mouseDown(const juce::MouseEvent& event){
+    if(&waveformDisplay == event.eventComponent){
+        mouseDrag(event);
+    }
+}
+
+void DeckGUI::mouseDrag(const juce::MouseEvent& event){
+    
+    if(&waveformDisplay == event.eventComponent){
+        float invw = 1./waveformDisplay.getWidth();
+        auto start = event.getMouseDownX() * invw;
+        auto end = event.getPosition().getX() * invw;
+        djAudioPlayer.loopRegion.load().start(start).end(end);
+        djAudioPlayer.loopRegion.store(djAudioPlayer.loopRegion.load().start(start).end(end));
+        waveformDisplay.repaint();
+    }
 }

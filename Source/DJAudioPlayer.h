@@ -11,6 +11,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Interval.h"
+#include <atomic>
 
 using namespace juce;
 
@@ -32,6 +34,9 @@ public:
     void setPositionRelative(double pos);
     double getPosition() const;
     double getPositionRelative() const;
+    
+    std::atomic<Interval<float>> loopRegion;
+    
     void setMix(float v);
     void setGain(float v);
     

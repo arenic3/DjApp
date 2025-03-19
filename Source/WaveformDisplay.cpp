@@ -25,13 +25,16 @@ void WaveformDisplay::paint (juce::Graphics& g)
 {
     if(fileLoaded){
 
+        //Draw the waveform when the deck gets a file to play
         g.setGradientFill(juce::ColourGradient(juce::Colours::orange, 0, 0, juce::Colours::red, getWidth(), getHeight(), false));
         audioThumbnail.drawChannel(g, getLocalBounds(), 0, audioThumbnail.getTotalLength(), 0, 1.0f);
         g.setColour(juce::Colours::green);
         int w = 4;
         g.drawRect(position * getWidth() - w/2, 0, w, getHeight());
         
+        //Store current Minutes, seconds and milliseconds in variables
         auto tl = audioThumbnail.getTotalLength();
+        
         int tcS = static_cast<int>(tl * position) % 60;
         int tcM = static_cast<int>((tl * position) / 60);
         int tcMs = static_cast<int>(position*(tl * 1000))%1000;
@@ -50,13 +53,12 @@ void WaveformDisplay::paint (juce::Graphics& g)
 
 void WaveformDisplay::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
 
 }
 
 bool WaveformDisplay::loadURL(const juce::URL& url)
 {
+    //Retrieve loaded file URL from the audioPlayer
     audioThumbnail.clear();
     fileLoaded = audioThumbnail.setSource(new URLInputSource(djAudioPlayer.lurl));
     return fileLoaded;
@@ -64,10 +66,12 @@ bool WaveformDisplay::loadURL(const juce::URL& url)
 
 void WaveformDisplay::changeListenerCallback(juce::ChangeBroadcaster * source)
 {
+    //Refresh component
     repaint();
 }
 
 void WaveformDisplay::setPositionRelative(double pos){
+    //Update position -> to be used for playhead
     if(pos >= 0. && pos != position){
         position = pos;
         repaint();

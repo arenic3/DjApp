@@ -14,6 +14,7 @@ r
 //==============================================================================
 FileManager::FileManager(DJAudioPlayer& player1, DJAudioPlayer& player2, DeckGUI& deck, DeckGUI& secondDeck) : djAudioPlayer1(player1), djAudioPlayer2(player2), deck1(deck), deck2(secondDeck)
 {
+    //add all buttons to component
     addButton.setLookAndFeel(&customButtons);
     addAndMakeVisible(addButton);
     addButton.setButtonText("Browse Files");
@@ -27,17 +28,20 @@ FileManager::FileManager(DJAudioPlayer& player1, DJAudioPlayer& player2, DeckGUI
     addAndMakeVisible(deck2Button);
     deck2Button.setButtonText("Load to Deck 2");
     
+    //Add button listeners to component
     addButton.addListener(this);
     removeButton.addListener(this);
     deck1Button.addListener(this);
     deck2Button.addListener(this);
     
+    //Add and set up table
     table.getHeader().setLookAndFeel(&customTable);
     addAndMakeVisible(table);
     table.setModel(this);
     table.setOpaque(false);
     table.getViewport()->setOpaque(false);
     
+    //Set table columns
     table.getHeader().addColumn("File Name", 1, 270);
     table.getHeader().addColumn("Song Name", 2, 280);
     table.getHeader().addColumn("Artist", 3, 270);
@@ -50,6 +54,7 @@ FileManager::~FileManager()
 
 void FileManager::paint (juce::Graphics& g)
 {
+    //Add component border & shadow
     float cornerSize = 10.0f;
     auto innerBounds = getLocalBounds().toFloat().reduced(10.0f);
     auto outerBounds = getLocalBounds().toFloat().reduced(8.0f);
@@ -75,9 +80,6 @@ void FileManager::resized()
     
     table.setBounds(10, 10, getWidth()-20, getHeight()/1.4);
     
-    //juce::Rectangle footer = juce::Rectangle<int>(0, getParentHeight()/4, getWidth(), getHeight()/10);
-    
-    //addButton.setSize(80, 10);
     addButton.setBounds(0, getHeight()/1.35, getWidth()/4, height/1.9);
     removeButton.setBounds(getWidth()/4, getHeight()/1.35, getWidth()/4, height/1.9);
     deck1Button.setBounds(getWidth()/2, getHeight()/1.35, getWidth()/4, height/1.9);
@@ -86,11 +88,13 @@ void FileManager::resized()
 
 int FileManager::getNumRows()
 {
+    //size of audioFiles vector
     return (int)audioFiles.size();
 }
 
 void FileManager::paintRowBackground(juce::Graphics& g, int rowNumber, int width, int height, bool rowIsSelected)
 {
+    //Paint alternating rows in diff colors -> orange & grey
     if(rowIsSelected)
     {
         g.fillAll(juce::Colours::orange.withAlpha(0.3f));
@@ -105,6 +109,7 @@ void FileManager::paintRowBackground(juce::Graphics& g, int rowNumber, int width
 
 void FileManager::paintCell(juce::Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
 {
+    //Populate rows with file data
     g.setColour(rowIsSelected ? juce::Colours::orangered : juce::Colours::white);
     
     if(rowNumber < audioFiles.size()){
@@ -112,28 +117,6 @@ void FileManager::paintCell(juce::Graphics& g, int rowNumber, int columnId, int 
             g.drawText(audioFiles[rowNumber].getFileName(), 2, 0, width -4, height, juce::Justification::centredLeft);
         }
     }
-}
-
-juce::Component * FileManager::refreshComponentForCell(int rowNumber, int columnId, bool isRowSelected, juce::Component * existingComponentToUpdate)
-{
-    if(columnId == 3 && rowNumber < audioFiles.size())
-    {
-        if(existingComponentToUpdate == nullptr)
-        {
-            //return new DeckButtonComponent(*this, audioFiles[rowNumber], rowNumber);
-        }
-        return existingComponentToUpdate;
-    }
-    else if (columnId == 4 && rowNumber < audioFiles.size())
-    {
-        if(existingComponentToUpdate == nullptr)
-        {
-            //return new DeckButtonComponent(*this, audioFiles[rowNumber], rowNumber);
-        }
-        return existingComponentToUpdate;
-    }
-    return nullptr;
-    
 }
 
 bool FileManager::isInterestedInFileDrag(const juce::StringArray& files)
