@@ -88,3 +88,12 @@ double DJAudioPlayer::getPositionRelative() const {
     return 0.;
 }
 
+void DJAudioPlayer::setMix(float v){
+    mix = v;
+    transportSource.setGain(gain * mix);
+}
+
+void DJAudioPlayer::setGain(float v){
+    gain = v;
+    transportSource.setGain(mix * gain);
+}

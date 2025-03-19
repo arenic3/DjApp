@@ -24,6 +24,7 @@ WaveformDisplay::~WaveformDisplay()
 void WaveformDisplay::paint (juce::Graphics& g)
 {
     if(fileLoaded){
+
         g.setGradientFill(juce::ColourGradient(juce::Colours::orange, 0, 0, juce::Colours::red, getWidth(), getHeight(), false));
         audioThumbnail.drawChannel(g, getLocalBounds(), 0, audioThumbnail.getTotalLength(), 0, 1.0f);
         g.setColour(juce::Colours::green);
@@ -31,16 +32,15 @@ void WaveformDisplay::paint (juce::Graphics& g)
         g.drawRect(position * getWidth() - w/2, 0, w, getHeight());
         
         auto tl = audioThumbnail.getTotalLength();
-        
         int tcS = static_cast<int>(tl * position) % 60;
         int tcM = static_cast<int>((tl * position) / 60);
-        int tcMs = static_cast<int>((tl - static_cast<int>(tl)) * 1000);
+        int tcMs = static_cast<int>(position*(tl * 1000))%1000;
         
         // Display the timecode on the waveform display
         g.setColour(juce::Colours::white);
         g.setFont(15.0f);
         g.drawText(juce::String(tcM) + ":" + juce::String(tcS).paddedLeft('0', 2) + ":" + juce::String(tcMs).paddedLeft('0', 3),
-        10, getHeight() - 30, 100, 20, juce::Justification::left);
+        10, getHeight() - 20, 100, 20, juce::Justification::left);
         
     } else {
         g.setColour(juce::Colours::darkorange);

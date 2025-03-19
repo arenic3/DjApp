@@ -47,6 +47,7 @@ private:
     DJAudioPlayer& djAudioPlayer;
     juce::Path path;
     juce::DropShadow shadow;
+    juce::Rectangle<int> waveformWindow;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeckGUI)
 };

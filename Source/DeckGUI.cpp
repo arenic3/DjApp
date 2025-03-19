@@ -64,7 +64,7 @@ DeckGUI::DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerT
     addAndMakeVisible(waveformDisplay);
     
     //Timer
-    startTimer(50);
+    startTimer(20);
 }
 
 DeckGUI::~DeckGUI()
@@ -90,6 +90,8 @@ void DeckGUI::paint (juce::Graphics& g)
     g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
     
     posSlider.setValue(djAudioPlayer.getPositionRelative(), juce::NotificationType::dontSendNotification);
+    
+    waveformWindow = juce::Rectangle<int>();
 }
 
 void DeckGUI::resized()
@@ -106,7 +108,7 @@ void DeckGUI::resized()
     gainDial.setBounds(getWidth()/1.2, rowH*4.4, getWidth()/6, 1.6*rowH);  //Gain Slider
     speedSlider.setBounds(5, rowH*4.4, getWidth()/6, 1.6*rowH);   //Speed slider
     posSlider.setBounds(0, rowH/1.9, getWidth(), rowH);  //Position Slider
-    waveformDisplay.setBounds(15, 0.9*rowH, getWidth()/1.05, 1.5*rowH); //Waveform
+    waveformDisplay.setBoundsRelative(0.02f, 0.2f, 0.95f, 0.3f); //Waveform
 }
 
 void DeckGUI::buttonClicked(juce::Button * button){

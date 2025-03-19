@@ -32,6 +32,12 @@ public:
     void setPositionRelative(double pos);
     double getPosition() const;
     double getPositionRelative() const;
+    void setMix(float v);
+    void setGain(float v);
+    
+    
+    float gain = 1.;
+    float mix = 1.;
     
     bool isLoaded = false;
     bool odl = false;

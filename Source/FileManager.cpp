@@ -73,15 +73,15 @@ void FileManager::resized()
 {
     float height = getHeight()/8;
     
-    table.setBounds(10, 10, getWidth()-20, 3.43*height);
+    table.setBounds(10, 10, getWidth()-20, getHeight()/1.4);
     
     //juce::Rectangle footer = juce::Rectangle<int>(0, getParentHeight()/4, getWidth(), getHeight()/10);
     
     //addButton.setSize(80, 10);
-    addButton.setBounds(0, 3.55*height, getWidth()/4, height/2);
-    removeButton.setBounds(getWidth()/4, 3.55*height, getWidth()/4, height/2);
-    deck1Button.setBounds(getWidth()/2, 3.55*height, getWidth()/4, height/2);
-    deck2Button.setBounds(getWidth()/1.333, 3.55*height, getWidth()/4, height/2);
+    addButton.setBounds(0, getHeight()/1.35, getWidth()/4, height/1.9);
+    removeButton.setBounds(getWidth()/4, getHeight()/1.35, getWidth()/4, height/1.9);
+    deck1Button.setBounds(getWidth()/2, getHeight()/1.35, getWidth()/4, height/1.9);
+    deck2Button.setBounds(getWidth()/1.333, getHeight()/1.35, getWidth()/4, height/1.9);
 }
 
 int FileManager::getNumRows()

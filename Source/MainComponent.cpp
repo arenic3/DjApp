@@ -29,6 +29,21 @@ MainComponent::MainComponent()
     
     //Format manager
     formatManager1.registerBasicFormats();
+    
+    //Crossfader
+    xfadeSlider.onValueChange = [this](){
+        float v = xfadeSlider.getValue();
+        float gl = std::min(1.f, 2.f*(1.f-v));
+        float gr = std::min(1.f, 2.f*v);
+        
+        player1.setMix(gl);
+        player2.setMix(gr);
+    };
+    
+    xfadeSlider.setRange(0, 1);
+    xfadeSlider.setValue(0.5);
+    xfadeSlider.setNumDecimalPlacesToDisplay(2);
+    addAndMakeVisible(xfadeSlider);
 }
 
 MainComponent::~MainComponent()
@@ -74,7 +89,8 @@ void MainComponent::resized()
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
-    deck1.setBounds(0, getHeight()/4, getWidth()/2, getHeight()/3.3);  //Deck1
-    deck2.setBounds(getWidth()/2, getHeight()/4, (getWidth()/2), getHeight()/3.3); //Deck2
-    fileManager.setBounds(0, getHeight()/1.8, getWidth(), getHeight()/1.13);
+    deck1.setBounds(0, getHeight()/4, getWidth()/2, getHeight()/3.5);  //Deck1
+    deck2.setBounds(getWidth()/2, getHeight()/4, (getWidth()/2), getHeight()/3.5); //Deck2
+    xfadeSlider.setBounds(0, getHeight()/2, getWidth(), getHeight()/12);
+    fileManager.setBounds(0, getHeight()/1.8, getWidth(), getHeight()/1.8);
 }
