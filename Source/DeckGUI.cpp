@@ -89,9 +89,8 @@ void DeckGUI::paint (juce::Graphics& g)
     
     g.setColour(juce::Colours::lightgrey.withAlpha(0.5f));
     g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
-    
-    waveformWindow = juce::Rectangle<int>();
 }
+
 
 void DeckGUI::paintOverChildren(juce::Graphics& g){
     if(djAudioPlayer.isLoaded){
@@ -170,7 +169,7 @@ void DeckGUI::loadWaveform()
 void DeckGUI::timerCallback(){
     waveformDisplay.setPositionRelative(djAudioPlayer.getPositionRelative());
 }
-
+ 
 void DeckGUI::mouseDown(const juce::MouseEvent& event){
     if(&waveformDisplay == event.eventComponent){
         mouseDrag(event);

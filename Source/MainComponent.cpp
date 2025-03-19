@@ -30,6 +30,7 @@ MainComponent::MainComponent()
     //Format manager
     formatManager1.registerBasicFormats();
     
+    
     //Crossfader
     xfadeSlider.onValueChange = [this](){
         float v = xfadeSlider.getValue();
@@ -44,6 +45,7 @@ MainComponent::MainComponent()
     xfadeSlider.setValue(0.5);
     xfadeSlider.setNumDecimalPlacesToDisplay(2);
     addAndMakeVisible(xfadeSlider);
+    
 }
 
 MainComponent::~MainComponent()

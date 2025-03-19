@@ -16,8 +16,6 @@
 #include "WaveformDisplay.h"
 
 //==============================================================================
-/*
-*/
 class DeckGUI  : public juce::Component, public juce::Button::Listener, public juce::Slider::Listener, public juce::Timer
 {
 public:
@@ -51,7 +49,6 @@ private:
     DJAudioPlayer& djAudioPlayer;
     juce::Path path;
     juce::DropShadow shadow;
-    juce::Rectangle<int> waveformWindow;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeckGUI)
 };

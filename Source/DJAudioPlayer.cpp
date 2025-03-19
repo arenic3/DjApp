@@ -61,6 +61,7 @@ void DJAudioPlayer::prepareToPlay(int samplesPerBlockExpected, double sampleRate
 }
 
 void DJAudioPlayer::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill){
+    
     auto l = loopRegion.load();
     if(l.proper()){
         auto p = getPositionRelative();
@@ -97,6 +98,7 @@ double DJAudioPlayer::getPositionRelative() const {
     if(len > 0.) return getPosition() / len;
     return 0.;
 }
+
 
 void DJAudioPlayer::setMix(float v){
     mix = v;
