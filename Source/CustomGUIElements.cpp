@@ -12,7 +12,7 @@
 
 CustomGUIDial::CustomGUIDial()
 {
-    dialImg = juce::ImageFileFormat::loadFrom(BinaryData::knob2_png, BinaryData::knob2_pngSize);
+    dialImg = juce::ImageFileFormat::loadFrom(BinaryData::big_knob_png, BinaryData::big_knob_pngSize);
 }
 
 void CustomGUIDial::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider)
@@ -20,7 +20,7 @@ void CustomGUIDial::drawRotarySlider(juce::Graphics& g, int x, int y, int width,
     if(dialImg.isValid()){
         const double rotation = (slider.getValue() - slider.getMinimum()) / (slider.getMaximum() - slider.getMinimum());
         
-        const int frames = dialImg.getHeight() / dialImg.getWidth();
+        const int frames = 128;
         const int frameId = (int)ceil(rotation * ((double)frames - 1.0));
         const float radius = juce::jmin(width / 2.0f, height / 2.0f);
         const float centerX = x + width * 0.5f;
@@ -39,7 +39,7 @@ void CustomGUIDial::drawRotarySlider(juce::Graphics& g, int x, int y, int width,
 
 CustomGUISlider::CustomGUISlider() 
 {
-    speedSliderImg = juce::ImageFileFormat::loadFrom(BinaryData::slider3_png, BinaryData::slider3_pngSize);
+    speedSliderImg = juce::ImageFileFormat::loadFrom(BinaryData::fader_vertical_png, BinaryData::fader_vertical_pngSize);
 }
 
 void CustomGUISlider::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, juce::Slider::SliderStyle, juce::Slider& slider)
@@ -47,7 +47,7 @@ void CustomGUISlider::drawLinearSlider(juce::Graphics& g, int x, int y, int widt
     if(speedSliderImg.isValid()){
         const double position = (slider.getValue() - slider.getMinimum()) / (slider.getMaximum() - slider.getMinimum());
         
-        const int frames = 100;
+        const int frames = 150;
         const int frameId = (int)ceil(position * ((double)frames - 1.0));
 
         g.drawImage(speedSliderImg, 0, 0, (int)width, (int)height, 0, frameId*(speedSliderImg.getHeight()/frames), speedSliderImg.getWidth(), speedSliderImg.getHeight()/frames);

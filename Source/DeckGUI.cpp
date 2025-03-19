@@ -82,12 +82,12 @@ void DeckGUI::paint (juce::Graphics& g)
     path.addRoundedRectangle(outerBounds, cornerSize);
     
     shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 15, juce::Point<int> (0, 0));
-    shadow.drawForPath (g, path);
+    //shadow.drawForPath (g, path);
     
-    g.setColour(juce::Colours::lightgrey);
+    g.setColour(juce::Colour(60, 60, 60));
     g.fillRoundedRectangle(innerBounds, cornerSize);
     
-    g.setColour(juce::Colours::lightgrey.withAlpha(0.5f));
+    g.setColour(juce::Colour(60, 60, 60).withAlpha(0.5f));
     g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
 }
 
@@ -119,9 +119,9 @@ void DeckGUI::resized()
     //loadButton.setBounds(0, 0, getWidth()/5, rowH/2);    //Load button
     playPauseButton.setBounds(columnW, getHeight()/1.3, columnW, 1.15*rowH); //Play Button
     stopButton.setBounds(2*columnW, getHeight()/1.3, columnW, 1.15*rowH); //Stop Button
-    gainDial.setBounds(getWidth()/1.2, rowH*4.2, getWidth()/6, 1.6*rowH);  //Gain Slider
-    speedSlider.setBounds(390, rowH*3.5, getWidth()/12, getHeight()/2);   //Speed slider
-    posSlider.setBounds(0, rowH/2.2, getWidth(), rowH);  //Position Slider
+    gainDial.setBounds(getWidth()/1.28, rowH*4, getWidth()/7, 1.2*rowH);  //Gain Dial
+    speedSlider.setBounds(getWidth()/1.12, rowH*2.9, getWidth()/12, getHeight()/1.5);   //Speed slider
+    posSlider.setBounds(0, rowH/2, getWidth(), rowH);  //Position Slider
     waveformDisplay.setBoundsRelative(0.021f, 0.2f, 0.961f, 0.33f); //Waveform
 }
 

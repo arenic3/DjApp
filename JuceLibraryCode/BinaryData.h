@@ -8,6 +8,21 @@
 
 namespace BinaryData
 {
+    extern const char*   fader_vertical_png;
+    const int            fader_vertical_pngSize = 1273656;
+
+    extern const char*   fader_horizontal_png;
+    const int            fader_horizontal_pngSize = 1540264;
+
+    extern const char*   big_knob_png;
+    const int            big_knob_pngSize = 7658752;
+
+    extern const char*   medium_knob_png;
+    const int            medium_knob_pngSize = 7683439;
+
+    extern const char*   small_knob_png;
+    const int            small_knob_pngSize = 6114029;
+
     extern const char*   bg2_png;
     const int            bg2_pngSize = 552379;
 
@@ -24,7 +39,7 @@ namespace BinaryData
     const int            knob2_pngSize = 162692;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 5;
+    const int namedResourceListSize = 10;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
