@@ -45,6 +45,8 @@ private:
     juce::Slider speedSlider;
     juce::Label speedLabel;
     DJAudioPlayer& djAudioPlayer;
+    juce::Path path;
+    juce::DropShadow shadow;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeckGUI)
 };

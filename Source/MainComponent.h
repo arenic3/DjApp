@@ -32,7 +32,6 @@ public:
     
 private:
     //==============================================================================
-    // Your private member variables go here...
     AudioFormatManager formatManager1;
     AudioThumbnailCache thumbCache{20};
     DJAudioPlayer player1{formatManager1};

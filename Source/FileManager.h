@@ -55,6 +55,8 @@ private:
     juce::TextButton removeButton;
     juce::TextButton deck2Button;
     juce::Image background;
+    juce::Path path;
+    juce::DropShadow shadow;
         
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileManager)
 };

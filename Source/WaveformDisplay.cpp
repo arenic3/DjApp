@@ -32,15 +32,19 @@ void WaveformDisplay::paint (juce::Graphics& g)
         
         auto tl = audioThumbnail.getTotalLength();
         
-        int tcS = (tl * position);
-        int tcMs = (tcS * position) / 1000;
-        int tcM = (tl * position) /60;
+        int tcS = static_cast<int>(tl * position) % 60;
+        int tcM = static_cast<int>((tl * position) / 60);
+        int tcMs = static_cast<int>((tl - static_cast<int>(tl)) * 1000);
         
-        std::cout << tcM << ": " << tcS << ": " << tcMs << std::endl;
+        // Display the timecode on the waveform display
+        g.setColour(juce::Colours::white);
+        g.setFont(15.0f);
+        g.drawText(juce::String(tcM) + ":" + juce::String(tcS).paddedLeft('0', 2) + ":" + juce::String(tcMs).paddedLeft('0', 3),
+        10, getHeight() - 30, 100, 20, juce::Justification::left);
         
     } else {
         g.setColour(juce::Colours::darkorange);
-        g.drawText("Waveform", 0, 0, getWidth(), getHeight(), juce::Justification::centred);
+        g.drawText("----", 0, 0, getWidth(), getHeight(), juce::Justification::centred);
     }
 }
 

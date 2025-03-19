@@ -78,10 +78,9 @@ void DeckGUI::paint (juce::Graphics& g)
     auto innerBounds = getLocalBounds().toFloat().reduced(10.0f);
     auto outerBounds = getLocalBounds().toFloat().reduced(7.0f);
     
-    juce::Path path;
     path.addRoundedRectangle(outerBounds, cornerSize);
     
-    juce::DropShadow shadow (juce::Colours::black.withAlpha(0.5f), 15, juce::Point<int> (0, 0));
+    shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 15, juce::Point<int> (0, 0));
     shadow.drawForPath (g, path);
     
     g.setColour(juce::Colours::lightgrey);
@@ -106,7 +105,7 @@ void DeckGUI::resized()
     stopButton.setBounds(2*columnW, getHeight()/1.3, columnW, 1.15*rowH); //Stop Button
     gainDial.setBounds(getWidth()/1.2, rowH*4.4, getWidth()/6, 1.6*rowH);  //Gain Slider
     speedSlider.setBounds(5, rowH*4.4, getWidth()/6, 1.6*rowH);   //Speed slider
-    posSlider.setBounds(0, 2.2*rowH, getWidth(), rowH);  //Position Slider
+    posSlider.setBounds(0, rowH/1.9, getWidth(), rowH);  //Position Slider
     waveformDisplay.setBounds(15, 0.9*rowH, getWidth()/1.05, 1.5*rowH); //Waveform
 }
 

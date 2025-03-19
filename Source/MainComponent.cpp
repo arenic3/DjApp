@@ -3,8 +3,6 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    // Make sure you set the size of the component after
-    // you add any child components.
     setSize (1000, 700);
 
     // Some platforms require permissions to open input channels so request that here
@@ -66,7 +64,7 @@ void MainComponent::releaseResources()
 //==============================================================================
 void MainComponent::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
+    //Set background
     background = juce::ImageCache::getFromMemory(BinaryData::bg2_png, BinaryData::bg2_pngSize);
     g.drawImageWithin(background, 0, 0, getWidth(), getHeight(), juce::RectanglePlacement::stretchToFit);
 }
