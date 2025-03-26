@@ -55,21 +55,21 @@ FileManager::~FileManager()
 void FileManager::paint (juce::Graphics& g)
 {
     //Add component border & shadow
-    float cornerSize = 10.0f;
+    //float cornerSize = 10.0f;
     auto innerBounds = getLocalBounds().toFloat().reduced(10.0f);
     auto outerBounds = getLocalBounds().toFloat().reduced(8.0f);
     
     
-    path.addRoundedRectangle(outerBounds, cornerSize);
+    path.addRectangle(outerBounds);
     
     shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 10, juce::Point<int> (0, 0));
     shadow.drawForPath (g, path);
     
     g.setColour(juce::Colours::lightgrey.withAlpha(0.5f));
-    g.fillRoundedRectangle(innerBounds, cornerSize);
+    g.fillRect(innerBounds);
     
     g.setColour(juce::Colours::orange.withAlpha(0.5f));
-    g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
+    g.drawRect(innerBounds);
     
     table.setColour(table.backgroundColourId, juce::Colours::orange.withAlpha(0.2f));
 }

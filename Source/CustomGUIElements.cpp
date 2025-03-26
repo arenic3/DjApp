@@ -39,18 +39,23 @@ void CustomGUIDial::drawRotarySlider(juce::Graphics& g, int x, int y, int width,
 
 CustomGUISlider::CustomGUISlider() 
 {
-    speedSliderImg = juce::ImageFileFormat::loadFrom(BinaryData::fader_vertical_png, BinaryData::fader_vertical_pngSize);
+    verticalSliderImg = juce::ImageFileFormat::loadFrom(BinaryData::fader_vertical_png, BinaryData::fader_vertical_pngSize);
+    horizontalSliderImg = juce::ImageFileFormat::loadFrom(BinaryData::fader_horizontal_png, BinaryData::fader_horizontal_pngSize);
 }
 
 void CustomGUISlider::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, juce::Slider::SliderStyle, juce::Slider& slider)
 {
-    if(speedSliderImg.isValid()){
+    if(verticalSliderImg.isValid() && horizontalSliderImg.isValid()){
         const double position = (slider.getValue() - slider.getMinimum()) / (slider.getMaximum() - slider.getMinimum());
         
         const int frames = 150;
         const int frameId = (int)ceil(position * ((double)frames - 1.0));
-
-        g.drawImage(speedSliderImg, 0, 0, (int)width, (int)height, 0, frameId*(speedSliderImg.getHeight()/frames), speedSliderImg.getWidth(), speedSliderImg.getHeight()/frames);
+        
+        if(slider.isVertical()){
+            g.drawImage(verticalSliderImg, 0, 0, (int)width, (int)height, 0, frameId*(verticalSliderImg.getHeight()/frames), verticalSliderImg.getWidth(), verticalSliderImg.getHeight()/frames);
+        } else if(slider.isHorizontal()){
+            g.drawImage(horizontalSliderImg, 0, 0, (int)width, (int)height, 0, frameId*(horizontalSliderImg.getHeight()/frames), horizontalSliderImg.getWidth(), horizontalSliderImg.getHeight()/frames);
+        }
     } else {
         static const float textPpercent = 0.35f;
         juce::Rectangle<float> text_bounds(1.0f + width * (1.0f - textPpercent) / 2.0f, 0.5f * height, width * textPpercent, 0.5f * height);
@@ -94,10 +99,10 @@ CustomGUITable::CustomGUITable()
 void CustomGUITable::drawTableHeaderBackground(juce::Graphics& g, juce::TableHeaderComponent& header)
 {
     auto bounds = header.getLocalBounds().toFloat();
-    auto cornerSize = 10.0f;
+    //auto cornerSize = 10.0f;
     
     g.setColour(juce::Colour(230, 150, 70));
-    g.fillRoundedRectangle(bounds, cornerSize);
+    g.fillRect(bounds);
     
     g.setColour(juce::Colours::black.withAlpha(0.5f));
     //g.drawRoundedRectangle(bounds, cornerSize, 1.0f);

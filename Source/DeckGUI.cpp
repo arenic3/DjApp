@@ -79,13 +79,13 @@ void DeckGUI::paint (juce::Graphics& g)
     auto innerBounds = getLocalBounds().toFloat().reduced(10.0f);
     auto outerBounds = getLocalBounds().toFloat().reduced(7.0f);
     
-    path.addRoundedRectangle(outerBounds, cornerSize);
+    path.addRectangle(outerBounds);
     
     shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 15, juce::Point<int> (0, 0));
-    //shadow.drawForPath (g, path);
+    shadow.drawForPath (g, path);
     
     g.setColour(juce::Colour(60, 60, 60));
-    g.fillRoundedRectangle(innerBounds, cornerSize);
+    g.fillRect(innerBounds);
     
     g.setColour(juce::Colour(60, 60, 60).withAlpha(0.5f));
     g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);

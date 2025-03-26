@@ -30,7 +30,8 @@ public:
     void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, juce::Slider::SliderStyle, juce::Slider& slider) override;
     
 private:
-    juce::Image speedSliderImg;
+    juce::Image verticalSliderImg;
+    juce::Image horizontalSliderImg;
 };
 
 class CustomGUIButton : public juce::LookAndFeel_V4

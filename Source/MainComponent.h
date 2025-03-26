@@ -4,8 +4,6 @@
 #include "DeckGUI.h"
 #include "FileManager.h"
 
-using namespace juce;
-
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
@@ -42,6 +40,7 @@ private:
     Image background;
     FileManager fileManager{player1, player2, deck1, deck2};
     Slider xfadeSlider;
+    CustomGUISlider customXFadeSlider;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

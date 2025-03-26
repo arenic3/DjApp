@@ -41,6 +41,8 @@ MainComponent::MainComponent()
         player2.setMix(gr);
     };
     
+    xfadeSlider.setLookAndFeel(&customXFadeSlider);
+    xfadeSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     xfadeSlider.setRange(0, 1);
     xfadeSlider.setValue(0.5);
     xfadeSlider.setNumDecimalPlacesToDisplay(2);
@@ -93,6 +95,6 @@ void MainComponent::resized()
     // update their positions.
     deck1.setBounds(0, getHeight()/4, getWidth()/2, getHeight()/3.5);  //Deck1
     deck2.setBounds(getWidth()/2, getHeight()/4, (getWidth()/2), getHeight()/3.5); //Deck2
-    xfadeSlider.setBounds(0, getHeight()/2, getWidth(), getHeight()/12);
+    xfadeSlider.setBounds(getWidth()/2, getHeight()/2, getWidth()/2, getHeight()/12);
     fileManager.setBounds(0, getHeight()/1.8, getWidth(), getHeight()/1.8);
 }

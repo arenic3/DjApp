@@ -9,13 +9,9 @@
       <FILE id="jsl9HW" name="fader_horizontal.png" compile="0" resource="1"
             file="../../../../Downloads/fader_horizontal.png"/>
       <FILE id="SynNGN" name="big_knob.png" compile="0" resource="1" file="../../../../Downloads/big_knob.png"/>
-      <FILE id="sJKN6y" name="medium_knob.png" compile="0" resource="1" file="../../../../Downloads/medium_knob.png"/>
-      <FILE id="t6ywCZ" name="small_knob.png" compile="0" resource="1" file="../../../../Downloads/small_knob.png"/>
       <FILE id="FfumfP" name="bg2.png" compile="0" resource="1" file="../../../../Library/Mobile Documents/com~apple~CloudDocs/bg2.png"/>
-      <FILE id="DCHphU" name="slider3.png" compile="0" resource="1" file="../../../../Downloads/slider3.png"/>
       <FILE id="rgY6gu" name="play.png" compile="0" resource="1" file="../../../../Downloads/play.png"/>
       <FILE id="f6SGuF" name="icon.png" compile="0" resource="1" file="../../../../Downloads/icon.png"/>
-      <FILE id="gfZD73" name="knob2.png" compile="0" resource="1" file="../../../../Downloads/knob2.png"/>
     </GROUP>
     <GROUP id="{2ADA1F3C-CF8F-A121-ED4A-270DAB70606A}" name="Source">
       <FILE id="WfQJgc" name="Interval.h" compile="0" resource="0" file="Source/Interval.h"/>
