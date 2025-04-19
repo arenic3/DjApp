@@ -13,7 +13,6 @@
 DJAudioPlayer::DJAudioPlayer(juce::AudioFormatManager& afm) : formatManager(afm) { }
 
 DJAudioPlayer::~DJAudioPlayer() { }
-
 bool DJAudioPlayer::loadURL(const juce::URL& url){
     auto * reader = formatManager.createReaderFor(url.getLocalFile());
     if(reader){
@@ -22,7 +21,8 @@ bool DJAudioPlayer::loadURL(const juce::URL& url){
         readerSource = std::move(newSource);
         lurl = url;
         isLoaded = true;
-        odl = true;
+        filter1.reset();
+        filter2.reset();
         return true;
     }
     isLoaded = false;
@@ -55,6 +55,17 @@ void DJAudioPlayer::setSpeed(double ratio){
     }
 }
 
+int DJAudioPlayer::getLength(juce::File& file)
+{
+    int len = 0;
+    
+    if(auto * reader = formatManager.createReaderFor(file)){
+        len = reader->lengthInSamples / reader->sampleRate;
+        std::make_unique<AudioFormatReaderSource>(reader, true);
+    }
+    return len;
+}
+
 void DJAudioPlayer::prepareToPlay(int samplesPerBlockExpected, double sampleRate){
     transportSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
     resampleSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
@@ -77,6 +88,15 @@ void DJAudioPlayer::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill
         return;
     }
     resampleSource.getNextAudioBlock(bufferToFill);
+    
+    int numChannels = bufferToFill.buffer->getNumChannels();
+    auto * chan0 = numChannels>0 ? bufferToFill.buffer->getWritePointer(0, bufferToFill.startSample) : nullptr;
+    auto * chan1 = numChannels>1 ? bufferToFill.buffer->getWritePointer(1, bufferToFill.startSample) : nullptr;
+    
+    for(int i=0; i<bufferToFill.numSamples; ++i){
+        if(chan0) chan0[i] = filter1(chan0[i]);
+        if(chan1) chan1[i] = filter2(chan1[i]);
+    }
 }
 
 void DJAudioPlayer::releaseResources(){
@@ -99,6 +119,10 @@ double DJAudioPlayer::getPositionRelative() const {
     return 0.;
 }
 
+void DJAudioPlayer::setCutoff(float f){
+    filter1.cutoff(f);
+    filter2.cutoff(f);
+}
 
 void DJAudioPlayer::setMix(float v){
     mix = v;

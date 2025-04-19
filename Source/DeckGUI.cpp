@@ -12,22 +12,23 @@
 #include "DeckGUI.h"
 
 //==============================================================================
-DeckGUI::DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerToUse, juce::AudioThumbnailCache& cacheToUse)
-: waveformDisplay(formatManagerToUse, cacheToUse, player), djAudioPlayer(player)
+DeckGUI::DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerToUse, juce::AudioThumbnailCache& cacheToUse, ScrollingWaveform* wave1, juce::Colour theme)
+: waveformDisplay(formatManagerToUse, cacheToUse, player, theme), scrollWave(wave1), djAudioPlayer(player), col(theme)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
+    setBufferedToImage(true);
     
     //Play / Pause button
-    playPauseButton.setLookAndFeel(&customButton);
+    playPauseButton.setLookAndFeel(&playButton);
     addAndMakeVisible(playPauseButton);
-    playPauseButton.setButtonText("Play/Pause");
+    //playPauseButton.setButtonText("Play/Pause");
     playPauseButton.addListener(this);
     
     //Stop button
-    stopButton.setLookAndFeel(&customButton);
+    stopButton.setLookAndFeel(&customStopButton);
     addAndMakeVisible(stopButton);
-    stopButton.setButtonText("Stop");
+    //stopButton.setButtonText("Stop");
     stopButton.addListener(this);
     
     //Gain dial
@@ -39,8 +40,13 @@ DeckGUI::DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerT
     gainDial.setRange(0, 1);
     gainDial.setValue(0.5);
     
+    addAndMakeVisible(gainLabel);
+    gainLabel.setText("GAIN", juce::dontSendNotification);
+    gainLabel.setColour(gainLabel.textColourId, juce::Colours::white);
+    gainLabel.attachToComponent(&gainDial, false);
+    
     //Position slider
-    //posSlider.setLookAndFeel(&customSlider);
+    posSlider.setLookAndFeel(&customPosSlider);
     addAndMakeVisible(posSlider);
     posSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);     //Remove text box from position slider
     posSlider.addListener(this);
@@ -57,15 +63,46 @@ DeckGUI::DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerT
     speedSlider.setValue(1);
     
     addAndMakeVisible(speedLabel);
-    speedLabel.setColour(speedLabel.textColourId, juce::Colours::black);
-    speedLabel.attachToComponent(&speedSlider, false);
+    speedLabel.setText("SPEED", juce::dontSendNotification);
+    speedLabel.setColour(speedLabel.textColourId, juce::Colours::white);
+    speedLabel.attachToComponent(&speedSlider, true);
+    
+    //Cutoff dial
+    cutoffDial.setLookAndFeel(&customDial);
+    addAndMakeVisible(cutoffDial);
+    cutoffDial.setSliderStyle(juce::Slider::RotaryVerticalDrag);  //Change slider into Dial
+    cutoffDial.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);    //Remove gain slider value box
+    cutoffDial.addListener(this);
+    cutoffDial.setRange(0, 1);
+    cutoffDial.setValue(1);
+    cutoffDial.onValueChange = [this](){    //Lambda
+        float v = cutoffDial.getValue();
+        djAudioPlayer.setCutoff(v*v*v*0.5);
+    };
+    
+    addAndMakeVisible(cutoffLabel);
+    cutoffLabel.setText("CUTOFF", juce::dontSendNotification);
+    cutoffLabel.setColour(cutoffLabel.textColourId, juce::Colours::white);
+    cutoffLabel.attachToComponent(&cutoffDial, false);
     
     //Waveform
     addAndMakeVisible(waveformDisplay);
     waveformDisplay.addMouseListener(this, false);
     
+    //Deck Label
+    addAndMakeVisible(deck);
+    deck.setFont(juce::FontOptions(20.f, juce::Font::bold));
+    
+    if(col == juce::Colours::orange){
+        deck.setText("DECK 1", juce::dontSendNotification);
+    } else {
+        deck.setText("DECK 2", juce::dontSendNotification);
+    }
+    
+    deck.setColour(speedLabel.textColourId, juce::Colours::darkorange.withAlpha(0.7f));
+    
     //Timer
-    startTimer(20);
+    startTimer(30);
 }
 
 DeckGUI::~DeckGUI()
@@ -75,20 +112,11 @@ DeckGUI::~DeckGUI()
 
 void DeckGUI::paint (juce::Graphics& g)
 {
-    float cornerSize = 10.0f;
-    auto innerBounds = getLocalBounds().toFloat().reduced(10.0f);
-    auto outerBounds = getLocalBounds().toFloat().reduced(7.0f);
+    g.setColour(juce::Colour(40, 40, 40));
+    g.fillRect(waveformDisplay.getBounds().reduced(1.5f));
     
-    path.addRectangle(outerBounds);
-    
-    shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 15, juce::Point<int> (0, 0));
-    shadow.drawForPath (g, path);
-    
-    g.setColour(juce::Colour(60, 60, 60));
-    g.fillRect(innerBounds);
-    
-    g.setColour(juce::Colour(60, 60, 60).withAlpha(0.5f));
-    g.drawRoundedRectangle(innerBounds, cornerSize, 1.0f);
+    g.setColour(juce::Colours::orange);
+    g.drawRect(waveformDisplay.getBounds());
 }
 
 
@@ -116,13 +144,17 @@ void DeckGUI::resized()
     auto rowH = getHeight() / 6;
     auto columnW = getWidth()/5;
     
-    //loadButton.setBounds(0, 0, getWidth()/5, rowH/2);    //Load button
-    playPauseButton.setBounds(columnW, getHeight()/1.3, columnW, 1.15*rowH); //Play Button
-    stopButton.setBounds(2*columnW, getHeight()/1.3, columnW, 1.15*rowH); //Stop Button
-    gainDial.setBounds(getWidth()/1.28, rowH*4, getWidth()/7, 1.2*rowH);  //Gain Dial
-    speedSlider.setBounds(getWidth()/1.12, rowH*2.9, getWidth()/12, getHeight()/1.5);   //Speed slider
-    posSlider.setBounds(0, rowH/2, getWidth(), rowH);  //Position Slider
-    waveformDisplay.setBoundsRelative(0.021f, 0.2f, 0.961f, 0.33f); //Waveform
+    
+    playPauseButton.setBounds(15, getHeight()/1.7, columnW/1.5, 1.01*rowH); //Play Button
+    stopButton.setBounds(15, getHeight()/1.3, columnW/1.5, 1.01*rowH); //Stop Button
+    gainDial.setBounds(getWidth()/1.98, rowH*4, 1.5*rowH, 1.5*rowH);  //Gain Dial
+    gainLabel.setBounds(getWidth()/1.91,rowH*3, 2*rowH, 1.5*rowH);  //Gain Label
+    cutoffDial.setBounds(getWidth()/3.18, rowH*4, 1.5*rowH, 1.5*rowH);  //Cutoff Dial
+    cutoffLabel.setBounds(getWidth()/3.2,rowH*3, 2*rowH, 1.5*rowH);  //Cutoff Label
+    speedSlider.setBounds(getWidth()/1.15, rowH*3.25-2, getWidth()/10, getHeight()/1.65);   //Speed slider
+    posSlider.setBounds(10, rowH/2-15, getWidth()-20, rowH);  //Position Slider
+    waveformDisplay.setBoundsRelative(0.013f, 0.2f, 0.975f, 0.33f); //Waveform
+    deck.setBounds(getWidth()/1.45, getHeight()/1.8, getWidth()/6, rowH);
 }
 
 void DeckGUI::buttonClicked(juce::Button * button){
@@ -142,6 +174,7 @@ void DeckGUI::buttonClicked(juce::Button * button){
         djAudioPlayer.playing = false;
         djAudioPlayer.stop();
         djAudioPlayer.setPosition(0);
+        scrollWave->setPositionRelative(0);
     }
     
 }
@@ -163,11 +196,15 @@ void DeckGUI::loadWaveform()
     {
         auto url = djAudioPlayer.lurl;
         waveformDisplay.loadURL(url);
+        scrollWave->loadURL(url);
     }
 }
 
 void DeckGUI::timerCallback(){
     waveformDisplay.setPositionRelative(djAudioPlayer.getPositionRelative());
+    scrollWave->setPositionRelative(djAudioPlayer.getPositionRelative());
+    
+    posSlider.setValue(djAudioPlayer.getPositionRelative());
 }
  
 void DeckGUI::mouseDown(const juce::MouseEvent& event){

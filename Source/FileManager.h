@@ -21,7 +21,7 @@
 class FileManager  : public juce::Component, public juce::TableListBoxModel, public juce::FileDragAndDropTarget, public juce::Button::Listener
 {
 public:
-    FileManager(DJAudioPlayer& player1, DJAudioPlayer& player2, DeckGUI& deck, DeckGUI& secondDeck);
+    FileManager(DJAudioPlayer& player1,DJAudioPlayer& player2, DeckGUI& deck, DeckGUI& secondDeck);
     ~FileManager() override;
 
     void paint (juce::Graphics&) override;
@@ -53,9 +53,6 @@ private:
     juce::TextButton deck1Button;
     juce::TextButton removeButton;
     juce::TextButton deck2Button;
-    juce::Image background;
-    juce::Path path;
-    juce::DropShadow shadow;
         
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileManager)
 };

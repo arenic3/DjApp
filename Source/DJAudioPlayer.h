@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "Interval.h"
 #include <atomic>
+#include "OnePole.h"
 
 using namespace juce;
 
@@ -27,6 +28,7 @@ public:
     void setPosition(double posInSecs);
     void setGain(double gain);
     void setSpeed(double ratio);
+    int getLength(juce::File& file);
     
     void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
     void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) override;
@@ -37,6 +39,7 @@ public:
     
     std::atomic<Interval<float>> loopRegion;
     
+    void setCutoff(float f);
     void setMix(float v);
     void setGain(float v);
     
@@ -45,13 +48,12 @@ public:
     float mix = 1.;
     
     bool isLoaded = false;
-    bool odl = false;
     juce::URL lurl;
     bool playing = false;
-    
 private:
     juce::AudioFormatManager& formatManager;
     std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
     juce::AudioTransportSource transportSource;
     juce::ResamplingAudioSource resampleSource{&transportSource, false, 2};
+    OnePole<float> filter1, filter2;
 };

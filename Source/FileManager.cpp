@@ -42,10 +42,8 @@ FileManager::FileManager(DJAudioPlayer& player1, DJAudioPlayer& player2, DeckGUI
     table.getViewport()->setOpaque(false);
     
     //Set table columns
-    table.getHeader().addColumn("File Name", 1, 270);
-    table.getHeader().addColumn("Song Name", 2, 280);
-    table.getHeader().addColumn("Artist", 3, 270);
-    table.getHeader().addColumn("Duration", 4, 140);
+    table.getHeader().addColumn("File Name", 1, 650);
+    table.getHeader().addColumn("Duration", 2, 100);
 }
 
 FileManager::~FileManager()
@@ -54,17 +52,12 @@ FileManager::~FileManager()
 
 void FileManager::paint (juce::Graphics& g)
 {
-    //Add component border & shadow
-    //float cornerSize = 10.0f;
-    auto innerBounds = getLocalBounds().toFloat().reduced(10.0f);
-    auto outerBounds = getLocalBounds().toFloat().reduced(8.0f);
+    if(getNumRows() == 0){
+        g.drawText(juce::String("Drop files"), table.getWidth()/2, table.getHeight()/2, 800, 35, juce::Justification::left);
+    }
     
-    
-    path.addRectangle(outerBounds);
-    
-    shadow = juce::DropShadow(juce::Colours::black.withAlpha(0.5f), 10, juce::Point<int> (0, 0));
-    shadow.drawForPath (g, path);
-    
+    //Add component border
+    auto innerBounds = getLocalBounds().toFloat(); //.reduced(5.0f);
     g.setColour(juce::Colours::lightgrey.withAlpha(0.5f));
     g.fillRect(innerBounds);
     
@@ -78,12 +71,12 @@ void FileManager::resized()
 {
     float height = getHeight()/8;
     
-    table.setBounds(10, 10, getWidth()-20, getHeight()/1.4);
+    table.setBounds(0, 0, getWidth()/1.3, getHeight()/2);
     
-    addButton.setBounds(0, getHeight()/1.35, getWidth()/4, height/1.9);
-    removeButton.setBounds(getWidth()/4, getHeight()/1.35, getWidth()/4, height/1.9);
-    deck1Button.setBounds(getWidth()/2, getHeight()/1.35, getWidth()/4, height/1.9);
-    deck2Button.setBounds(getWidth()/1.333, getHeight()/1.35, getWidth()/4, height/1.9);
+    addButton.setBounds((getWidth()/1.3), 0, (getWidth()/4.33), height+2);
+    removeButton.setBounds((getWidth()/1.3), height, (getWidth()/4.33), height+2);
+    deck1Button.setBounds((getWidth()/1.3), (height*2), (getWidth()/4.33), height+2);
+    deck2Button.setBounds((getWidth()/1.3), (height*3), (getWidth()/4.33), height+2);
 }
 
 int FileManager::getNumRows()
@@ -112,15 +105,24 @@ void FileManager::paintCell(juce::Graphics& g, int rowNumber, int columnId, int 
     //Populate rows with file data
     g.setColour(rowIsSelected ? juce::Colours::orangered : juce::Colours::white);
     
+    //File name
     if(rowNumber < audioFiles.size()){
         if(columnId == 1){
             g.drawText(audioFiles[rowNumber].getFileName(), 2, 0, width -4, height, juce::Justification::centredLeft);
+        }
+        //Track duration (mm:ss)
+        if(columnId == 2){
+            auto dur = djAudioPlayer1.getLength(audioFiles[rowNumber]);
+            int durM = static_cast<int>(dur / 60);
+            int durS = static_cast<int>(dur % 60);
+            g.drawText(juce::String(durM) + ":" + juce::String(durS).paddedLeft('0', 2), 0, 2, width, height, juce::Justification::left);
         }
     }
 }
 
 bool FileManager::isInterestedInFileDrag(const juce::StringArray& files)
 {
+    //Specify file valid type
     for(auto file : files)
     {
         if(juce::File(file).hasFileExtension("wav;mp3;aif;aiff"))
@@ -136,6 +138,7 @@ void FileManager::filesDropped(const juce::StringArray& files, int x, int y)
 
 void FileManager::buttonClicked(juce::Button * button)
 {
+    //Browse local files
     if(button == &addButton)
     {
         juce::FileChooser chooser("select audio files...", {}, "*.wav;*.mp3;*.aif;*.aiff");
@@ -152,6 +155,7 @@ void FileManager::buttonClicked(juce::Button * button)
             addFilesToList(fileStrings);
         }
     }
+    //Remove added files from app
     else if(button == &removeButton)
     {
         auto selectedRows = table.getSelectedRows();
@@ -161,6 +165,7 @@ void FileManager::buttonClicked(juce::Button * button)
         }
         table.updateContent();
     }
+    //Call function to load files into decks & waveforms
     else if(button == &deck1Button){
         auto selectedRow = table.getSelectedRow();
         loadFileIntoDeck(audioFiles[selectedRow], 1);
@@ -175,6 +180,7 @@ void FileManager::buttonClicked(juce::Button * button)
 
 void FileManager::loadFileIntoDeck(const juce::File& file, int deckIndex)
 {
+    //Load files into deck audioplayers
     if(deckIndex == 1)
     {
         djAudioPlayer1.loadURL(juce::URL(file));
@@ -186,6 +192,7 @@ void FileManager::loadFileIntoDeck(const juce::File& file, int deckIndex)
 
 void FileManager::addFilesToList(const juce::StringArray& files)
 {
+    //Manage file vector
     for(auto file : files)
     {
         juce::File audioFile(file);

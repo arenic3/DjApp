@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 #include "DeckGUI.h"
 #include "FileManager.h"
+#include "ScrollingWaveform.h"
 
 //==============================================================================
 /*
@@ -32,15 +33,20 @@ private:
     //==============================================================================
     AudioFormatManager formatManager1;
     AudioThumbnailCache thumbCache{20};
+    CustomComponent ccomp;
+    CustomComponent ccomp2;
     DJAudioPlayer player1{formatManager1};
-    DeckGUI deck1{player1, formatManager1, thumbCache};
+    DeckGUI deck1{player1, formatManager1, thumbCache, &wave1, juce::Colours::orange};
     DJAudioPlayer player2{formatManager1};
-    DeckGUI deck2{player2, formatManager1, thumbCache};
+    DeckGUI deck2{player2, formatManager1, thumbCache, &wave2, juce::Colours::orangered};
     MixerAudioSource mixerSource;
+    ScrollingWaveform wave1{formatManager1, thumbCache, player1, juce::Colours::orange};
+    ScrollingWaveform wave2{formatManager1, thumbCache, player2, juce::Colours::orangered};
     Image background;
     FileManager fileManager{player1, player2, deck1, deck2};
-    Slider xfadeSlider;
     CustomGUISlider customXFadeSlider;
+    Slider xfadeSlider;
+    juce::Image logo;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

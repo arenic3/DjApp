@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ZkQa3G" name="Dj-app" projectType="guiapp" useAppConfig="0"
+<JUCERPROJECT id="ZkQa3G" name="MIXN" projectType="guiapp" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
-  <MAINGROUP id="UYCR4n" name="Dj-app">
+  <MAINGROUP id="UYCR4n" name="MIXN">
     <GROUP id="{82BC0E0C-DB65-2EED-3B5E-F341CE3C69FE}" name="Assets">
+      <FILE id="mYvFXh" name="logo2.png" compile="0" resource="1" file="../../../../Library/Mobile Documents/com~apple~CloudDocs/logo2.png"/>
+      <FILE id="VrKQur" name="stop.png" compile="0" resource="1" file="../../../../Downloads/stop.png"/>
+      <FILE id="dOgoLy" name="bleh.png" compile="0" resource="1" file="../../../../Downloads/bleh.png"/>
       <FILE id="FA2rbp" name="fader_vertical.png" compile="0" resource="1"
             file="../../../../Downloads/fader_vertical.png"/>
       <FILE id="jsl9HW" name="fader_horizontal.png" compile="0" resource="1"
@@ -14,6 +17,11 @@
       <FILE id="f6SGuF" name="icon.png" compile="0" resource="1" file="../../../../Downloads/icon.png"/>
     </GROUP>
     <GROUP id="{2ADA1F3C-CF8F-A121-ED4A-270DAB70606A}" name="Source">
+      <FILE id="g8vzKO" name="OnePole.h" compile="0" resource="0" file="Source/OnePole.h"/>
+      <FILE id="TQQ0AZ" name="ScrollingWaveform.cpp" compile="1" resource="0"
+            file="Source/ScrollingWaveform.cpp"/>
+      <FILE id="ivtY7B" name="ScrollingWaveform.h" compile="0" resource="0"
+            file="Source/ScrollingWaveform.h"/>
       <FILE id="WfQJgc" name="Interval.h" compile="0" resource="0" file="Source/Interval.h"/>
       <FILE id="O22co0" name="WaveformDisplay.cpp" compile="1" resource="0"
             file="Source/WaveformDisplay.cpp"/>

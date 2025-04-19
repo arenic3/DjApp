@@ -14,12 +14,13 @@
 #include "DJAudioPlayer.h"
 #include "CustomGUIElements.h"
 #include "WaveformDisplay.h"
+#include "ScrollingWaveform.h"
 
 //==============================================================================
 class DeckGUI  : public juce::Component, public juce::Button::Listener, public juce::Slider::Listener, public juce::Timer
 {
 public:
-    DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerToUse, juce::AudioThumbnailCache& cacheToUse);
+    DeckGUI(DJAudioPlayer& player, juce::AudioFormatManager& formatManagerToUse, juce::AudioThumbnailCache& cacheToUse, ScrollingWaveform* wave1, juce::Colour theme);
     ~DeckGUI() override;
 
     void paint (juce::Graphics&) override;
@@ -36,19 +37,27 @@ public:
     void mouseDrag(const juce::MouseEvent& event) override;
 
 private:
-    WaveformDisplay waveformDisplay;
+    mutable WaveformDisplay waveformDisplay;
+    mutable ScrollingWaveform* scrollWave;
     CustomGUIDial customDial;
     CustomGUISlider customSlider;
-    CustomGUIButton customButton;
+    CustomPlayButton playButton;
+    CustomStopButton customStopButton;
     juce::TextButton playPauseButton;
     juce::TextButton stopButton;
     juce::Slider gainDial;
+    juce::Label gainLabel;
+    CustomProgressBar customPosSlider;
     juce::Slider posSlider;
     juce::Slider speedSlider;
     juce::Label speedLabel;
+    juce::Slider cutoffDial;
+    juce::Label cutoffLabel;
     DJAudioPlayer& djAudioPlayer;
-    juce::Path path;
-    juce::DropShadow shadow;
+    juce::Label deck;
+    bool flash;
+    int counter;
+    const juce::Colour col;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeckGUI)
 };

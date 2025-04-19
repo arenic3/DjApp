@@ -12,8 +12,9 @@
 #include "WaveformDisplay.h"
 
 //==============================================================================
-WaveformDisplay::WaveformDisplay(juce::AudioFormatManager& formatManagerToUse, juce::AudioThumbnailCache& cacheToUse, DJAudioPlayer& player) : audioThumbnail(1000, formatManagerToUse, cacheToUse), djAudioPlayer(player)
+WaveformDisplay::WaveformDisplay(juce::AudioFormatManager& formatManagerToUse, juce::AudioThumbnailCache& cacheToUse, DJAudioPlayer& player, juce::Colour theme) : djAudioPlayer(player), col(theme), audioThumbnail(2000, formatManagerToUse, cacheToUse)
 {
+    setBufferedToImage(true);
     audioThumbnail.addChangeListener(this);
 }
 
@@ -26,13 +27,14 @@ void WaveformDisplay::paint (juce::Graphics& g)
     if(fileLoaded){
 
         //Draw the waveform when the deck gets a file to play
-        g.setGradientFill(juce::ColourGradient(juce::Colours::orange, 0, 0, juce::Colours::red, getWidth(), getHeight(), false));
-        auto b = getBoundsInParent();
+        g.setColour(col);
+        auto b = getLocalBounds().toNearestInt().reduced(5.0f);
         b.setBounds(0, 10, getWidth(), getHeight()/1.3);
-        audioThumbnail.drawChannel(g, b, 0, audioThumbnail.getTotalLength(), 0, 1.0f);
+        audioThumbnail.drawChannel(g, b.reduced(1.0f, 5.0f), 0, audioThumbnail.getTotalLength(), 0, 1.0f);
+        
         g.setColour(juce::Colours::green);
         int w = 4;
-        g.drawRect(position * getWidth() - w/2, 0, w, getHeight());
+        g.drawRect(position * getWidth() - w/2, 1, w, getHeight()-2);
         
         //Store current Minutes, seconds and milliseconds in variables
         auto tl = audioThumbnail.getTotalLength();
@@ -44,12 +46,9 @@ void WaveformDisplay::paint (juce::Graphics& g)
         // Display the timecode on the waveform display
         g.setColour(juce::Colours::white);
         g.setFont(15.0f);
-        g.drawText(juce::String(tcM) + ":" + juce::String(tcS).paddedLeft('0', 2) + ":" + juce::String(tcMs).paddedLeft('0', 3),
-        0, getHeight() - 68, 100, 20, juce::Justification::left);
+        g.drawText(juce::String(tcM).paddedLeft('0', 2) + ":" + juce::String(tcS).paddedLeft('0', 2) + ":" + juce::String(tcMs).paddedLeft('0', 3),
+        2, getHeight() - 80, 100, 20, juce::Justification::left);
         
-    } else {
-        g.setColour(juce::Colours::darkorange);
-        g.drawText("-", 0, 0, getWidth(), getHeight(), juce::Justification::centred);
     }
 }
 
