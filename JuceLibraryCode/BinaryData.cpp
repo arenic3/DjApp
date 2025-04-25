@@ -48949,7 +48949,6 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
         case 0xc7941157:  numBytes = 542573; return bleh_png;
         case 0x88489e09:  numBytes = 1273656; return fader_vertical_png;
         case 0x46a45577:  numBytes = 1540264; return fader_horizontal_png;
-        case 0x3bc7593f:  numBytes = 7658752; return big_knob_png;
         case 0xf2d34f77:  numBytes = 552379; return bg2_png;
         case 0x7000b29e:  numBytes = 1303; return play_png;
         case 0xd4093963:  numBytes = 437428; return icon_png;
@@ -48967,7 +48966,6 @@ const char* namedResourceList[] =
     "bleh_png",
     "fader_vertical_png",
     "fader_horizontal_png",
-    "big_knob_png",
     "bg2_png",
     "play_png",
     "icon_png"
@@ -48980,7 +48978,6 @@ const char* originalFilenames[] =
     "bleh.png",
     "fader_vertical.png",
     "fader_horizontal.png",
-    "big_knob.png",
     "bg2.png",
     "play.png",
     "icon.png"

@@ -167,14 +167,18 @@ void FileManager::buttonClicked(juce::Button * button)
     }
     //Call function to load files into decks & waveforms
     else if(button == &deck1Button){
-        auto selectedRow = table.getSelectedRow();
-        loadFileIntoDeck(audioFiles[selectedRow], 1);
-        deck1.loadWaveform();
+        if(audioFiles.size() > 0){  //Avoids program crashing in bug I found
+            auto selectedRow = table.getSelectedRow();
+            loadFileIntoDeck(audioFiles[selectedRow], 1);
+            deck1.loadWaveform();
+        }
     }
     else if(button == &deck2Button){
-        auto selectedRow = table.getSelectedRow();
-        loadFileIntoDeck(audioFiles[selectedRow], 2);
-        deck2.loadWaveform();
+        if(audioFiles.size() > 0){
+            auto selectedRow = table.getSelectedRow();
+            loadFileIntoDeck(audioFiles[selectedRow], 2);
+            deck2.loadWaveform();
+        }
     }
 }
 
