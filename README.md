@@ -7,4 +7,5 @@ MIXN is a GUI audio application built using the JUCE framework. It has an intuit
 ## Building
 
 The app can be built through projucer (using the .juce file) or on any ARM mac you can download the packaged app
-<img width="1202" alt="Screenshot 2025-05-01 at 17 56 23" src="https://github.com/user-attachments/assets/04d13923-c3bd-4a09-9424-22f2456e47c0" />
+
+<img width="1202" alt="Screenshot 2025-05-01 at 17 57 44" src="https://github.com/user-attachments/assets/a392127a-6bb2-4c31-a7b0-f4b5437e6fa9" />
